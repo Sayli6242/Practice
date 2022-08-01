@@ -1,8 +1,7 @@
 from sys import argv
 
 
-print(argv)
-# return 1
+# a()
 
 
 def a():
