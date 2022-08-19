@@ -13,7 +13,7 @@ M1 = [[1,2,3],[4,5,6],[7,8,9]]
 M2 = [[1,1,1],[1,1,1],[1,1,1,]]
 M3 = []
 result = 0
-for i in range(len(M1)):
+for i in range(len(M1)):             # how to acces multidimentional list
     # print(M1[i])
     l =[]
     for j in range(len(M1[i])):

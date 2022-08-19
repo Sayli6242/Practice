@@ -16,13 +16,6 @@ Now, tell user whether that number is present in list or not.
 """
 
 
-# print(z)
-
-        
-
-
-
-
 def take_user_input():
     x = int(input('enter the number'))
     lst = [ ]

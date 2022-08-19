@@ -12,13 +12,32 @@ Input - N number of.people ( 0< N < 20)
 5.
 
 """
+def get_user_input():
+    x = int(input('enter length of list: '))
+    lst = [ ]
+    for i in range(x):
+        age = int(input(f'enter 1st value of age to be in list{i}: '))
+        lst.append(age)
+    return lst
 
+def find_youngest_oldest_age(lst):
+    youngest_age = lst[0]
+    oldest_age = lst[0]
+    for i in range(1,len(lst)):
+        if lst[i] > oldest_age:
+            oldest_age = lst[i]
+        if lst[i] < youngest_age:
+            youngest_age = lst[i]
+    return youngest_age , oldest_age
 
-N = int(input('enter number of people '))
-ages = []
-for i in range(N):
-    age = int(input('enter the age '))
-    ages.append(age)
+def main():
+    lst = get_user_input()
+    youngest_age , oldest_age =  find_youngest_oldest_age(lst)
+
+    print('the youngest age is: ',youngest_age)
+    print('the oldest age is: ',oldest_age)
+
+main()
 
 # TODO: find min and max number
 
