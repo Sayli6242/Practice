@@ -39,6 +39,3 @@ def main():
 
 main()
 
-# TODO: find min and max number
-
-# arr = arr.append(y)

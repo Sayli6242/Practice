@@ -13,7 +13,7 @@ check whether an alphabet is vowel or consonant
 x = input('enter character: ')
 lst = ['a','e','i','o','u','A','E','I','O','U']
 
-if x in lst:
+if x in lst:              # check if element is in list or not
     print('this is vowel')
 else:
     print('this is consonent')
