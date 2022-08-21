@@ -17,7 +17,7 @@ def to_delete_all_elements_in_list(lst):
     dup_elem =[]
     for i in range(len(lst)):
         if i in dup_elem:
-            continue
+            continue                    
             
         for j in range(len(lst)):
             if i==j:
