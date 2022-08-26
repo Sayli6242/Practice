@@ -1,59 +1,59 @@
-""" 
-  inputStr[start:end:step]  syntax for slicing
+# """ 
+#   inputStr[start:end:step]  syntax for slicing
 
 
-arr   i.like.this.program.very.much
+# arr   i.like.this.program.very.much
 
-a     !
-b      !
+# a     !
+# b      !
 
 res = like+"."+res
 
-message = "hey user"
-print(len(message))
+# message = "hey user"
+# print(len(message))
 
 
-a = "Hey User!"
-print(len(a))
+# a = "Hey User!"
+# print(len(a))
 
 
-Write a Python program to count the number of characters (character frequency) in a string. Go to the editor
-Sample String : google.com'
-Expected Result : {'g': 2, 'o': 3, 'l': 1, 'e': 1, '.': 1, 'c': 1, 'm': 1}
+# Write a Python program to count the number of characters (character frequency) in a string. Go to the editor
+# Sample String : google.com'
+# Expected Result : {'g': 2, 'o': 3, 'l': 1, 'e': 1, '.': 1, 'c': 1, 'm': 1}
 
 
-b = "google.com"
+# b = "google.com"
 
-y = str(123)
-x = "hello" * 3
-print(x, y)
+# y = str(123)
+# x = "hello" * 3
+# print(x, y)
 
-x = "hello" + "world"
-y = len(x)
-print(y, x)
+# x = "hello" + "world"
+# y = len(x)
+# print(y, x)
 
-x = "hello" + "to python" + "world"
-for char in x:
-  y = char
- print(y, ":", end=" ")
+# x = "hello" + "to python" + "world"
+# for char in x:
+#   y = char
+#  print(y, ":", end=" ")
 
 
-num_1 = "100"
-num_2 = "200"
+# num_1 = "100"
+# num_2 = "200"
 
-num_1 = int(num_1)
-num_2 = int(num_2)
+# num_1 = int(num_1)
+# num_2 = int(num_2)
 
-print(num_1 + num_2)
+# print(num_1 + num_2)
 
-teams = ["India", "bulgeria", "naizeria", "kazakistan", "england"]
-print(len(teams))
+# teams = ["India", "bulgeria", "naizeria", "kazakistan", "england"]
+# print(len(teams))
 
-print(teams[0:2])
+# print(teams[0:2])
 
-teams.append("Pakistan")
+# teams.append("Pakistan")
 
-teams.insert(2, "pakistan")  # 2 denotes location of string
+# teams.insert(2, "pakistan")  # 2 denotes location of string
 
 teams2 = ["urope", "arebia"]
 teams.extend(teams2)
@@ -93,5 +93,5 @@ for index, team in enumerate(teams):
   print(index, team)
 
 
-list are mutable and tuples are not
-"""
+# list are mutable and tuples are not
+# """

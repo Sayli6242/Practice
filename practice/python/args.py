@@ -1,4 +1,6 @@
-# from sys import argv
+
+
+
 # print(argv)
 # return 1
 # def a():
@@ -50,9 +52,8 @@
 # print(x[:2], x[-2:])
 
 
-from hashlib import new
 
 
-x = "restart"
-new = x.replace("r", "$", 5)
-print(new)
+# x = "restart"
+# new = x.replace("r", "$", 5)
+# print(new)

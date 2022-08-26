@@ -29,6 +29,7 @@ def take_user_input():
 def check_if_element_in_list(lst,z):
     found = False
     for i in lst:
+        # 
         if z == i:
             found = True
             break

@@ -3,7 +3,7 @@
 Write a program to find the sum of all elements of a list.
 
 """
-from functools import total_ordering
+
 
 
 def get_user_input():
