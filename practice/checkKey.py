@@ -6,23 +6,14 @@ chech if key is present (dict.get(key,"not found") dict[key])
 """
 
 
-def to_get_user_input():
-    x = int(input('enter given for in list'))
-    lst = [ ]
-    for i in range(x):
-        y = int(input(f'enter list values {i}: '))
-        lst.append(y)
-    return lst
-
-
-
-def check_given_key_present_in_list(lst):
+dict = {5,1,2,4,6,3,7,51,46}
+def check_given_key_present_in_dictionary(dict):
     
     z = int(input('enter the number'))
 
-    for i in range(len(lst)): 
+    for i in range(len(dict)): 
 
-        if z == lst[i]:
+        if z == dict[i]:
 
             return True
         else:
@@ -30,12 +21,12 @@ def check_given_key_present_in_list(lst):
 
 
 def main():
-    lst = to_get_user_input()
-    result = check_given_key_present_in_list(lst)
+  
+    result = check_given_key_present_in_dictionary(dict)
     if result == True:
-        print('number is present in list')
+        print('number is present in dict')
     else:    
-        print('number is not present in list')
+        print('number is not present in dict')
 
     
     
