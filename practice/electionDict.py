@@ -16,16 +16,7 @@ what is given
 
 
 """
-
-
-
-def main():
-    # list of votes
-    votes =["john", "john", "mackie", 
-                    "john", "john", "mackie", 
-                    "lamie", "lamie", "john",
-                    "john", "lamie", "john", 
-                    "john"]
+def to_find_vote_count_and_highest_votes(votes):
 
     vote_count = {}
     # key is candidate name and value is count of votes.
@@ -36,8 +27,20 @@ def main():
         # create key , value in dictionary vote count. where key is candidate name and value is vote count.
         existing_val = vote_count.get(vote,0)
         vote_count[vote] = existing_val+1
-    
-    #  calculate min max in dict
+          #  calculate min max in dict
+        return vote_count()
 
+
+def main():
+    # list of votes
+    votes =["john", "john", "mackie", 
+                    "john", "john", "mackie", 
+                    "lamie", "lamie", "john",
+                    "john", "lamie", "john", 
+                    "john"]
+                    
+    print("candidate who receives highest votes: ",votes)
+    
+  
 
 main()
