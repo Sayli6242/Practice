@@ -6,7 +6,17 @@
     cards = ["Ace", "2", "3", ......so on] 
 3) Your list should have items like '2 of Hearts', '3 of Hearts', '4 of Hearts'
 4) Print total **52 cards** (13*4)
-
+"""
+"""
+1) Define given list l1 and l2.
+2) Define empty list to store obtain list.
+3) apply for loop on list l1 to access each element in it.
+4) again apply for loop inside for to access each element in list l2.
+5) then concatinate element of l1 with each element of l2. 
+6) means concatinate j + i.
+7) store result in new_lst .
+8) append result to empty define list and store in it.
+9) return lst.
 """
 def given_lst():
     l1 = ['hearts','clubs','diamond','spades']
