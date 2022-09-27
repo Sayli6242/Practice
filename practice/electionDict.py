@@ -17,7 +17,6 @@ what is given
 
 """
 def to_find_vote_count_and_highest_votes(votes):
-
     vote_count = {}
     # key is candidate name and value is count of votes.
 

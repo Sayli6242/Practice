@@ -1,5 +1,3 @@
-from cmath import e
-
 
 a = [1, 2, 3]
 try: 
