@@ -16,8 +16,6 @@ def check_even_odd_int(x):
     return
 
 def main():
-    A: Rock B: Paper C: Scissors
-    result = take_user_input()
 
 
 
