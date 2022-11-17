@@ -18,6 +18,7 @@
 8) append result to empty define list and store in it.
 9) return lst.
 """
+
 def given_lst():
     l1 = ['hearts','clubs','diamond','spades']
     l2 = ['Ace','2','3','4','5','6','7','8','9','10','Jack','Queen','King']

@@ -36,9 +36,10 @@ def To_choose_random_card_for_player(card_deck):
             print("your score is : ",score)
         # except:    
         #     print('some error occured')
+    return score
 
 def main():
     card_deck = ['Ace','2','3','4','5','6','7','8','9','10','jack','Queen','King']
+    score = To_choose_random_card_for_player(card_deck)
 
-    result = To_choose_random_card_for_player(card_deck)
 main()

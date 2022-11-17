@@ -27,7 +27,7 @@ def to_find_vote_count_and_highest_votes(votes):
         existing_val = vote_count.get(vote,0)
         vote_count[vote] = existing_val+1
           #  calculate min max in dict
-        return vote_count()
+    return max(vote_count, key=vote_count.get) 
 
 
 def main():
@@ -38,7 +38,7 @@ def main():
                     "john", "lamie", "john", 
                     "john"]
                     
-    print("candidate who receives highest votes: ",votes)
+    print("candidate who receives highest votes: ",to_find_vote_count_and_highest_votes(votes))
     
   
 

@@ -1,2 +1,2 @@
-date = str(random.uniform())
-# print(random)
+if not swapped:
+		# 	return
