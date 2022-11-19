@@ -16,23 +16,33 @@ def get_user_input():
     return str, sub_str
 
 
-def find_count_of_substring_in_string(
-    str,
-    sub_str,
-):
+def spliting_string(str, sub_str):
+    split_value = []
+    tmp = ""
+    for sub_str in str:
+        if sub_str == " ":
+            split_value.append(tmp)
+            tmp = ""
+        else:
+            tmp += sub_str
+    if tmp:
+        split_value.append(tmp)
+    return split_value, tmp
+
+
+def find_count_of_substring_in_string(str, sub_str, split_value, tmp):
     count = 0
-    for i in str:
-        if i == sub_str:
+    for i in range(0, len(split_value)):
+        if split_value[i] == sub_str:
             count = count + 1
     print(count)
+    return count
 
 
 def main():
     str, sub_str = get_user_input()
-    count = find_count_of_substring_in_string(
-        str,
-        sub_str,
-    )
+    split_value, tmp = spliting_string(str, sub_str)
+    count = find_count_of_substring_in_string(str, sub_str, split_value, tmp)
 
 
 main()
