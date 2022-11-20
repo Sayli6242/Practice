@@ -1,16 +1,14 @@
 class Dog:
-    def __init__(self, name, age):
+    def __init__(self, name, age, listDog):
         self.name = name
         self.age = age
+        self.listDog = []
 
     def get_name(self):
         return self.name
 
     def get_age(self):
         return self.age
-
-    def set_age(self, age):
-        self.age = age
 
 
 d = Dog("bily", 14)
