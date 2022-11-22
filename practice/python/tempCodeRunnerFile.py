@@ -1,2 +1,2 @@
-if not swapped:
-		# 	return
+    print(count)
+                    prin
