@@ -1,6 +1,5 @@
 """
 write a python program to find the first appearance of the 'not' and 'poor' from given string,
- 
 if 'not' follows the 'poor' , replace the whole 'not' ...'poor' substring with 'good'.
 Return the resulting string.
 
@@ -22,14 +21,12 @@ def spliting_string(str, sub_str):
     for sub_str in str:
         if sub_str == " ":
             new_lst.append(temp)
-            temp = " "
         else:
             temp += sub_str
     if temp:
         new_lst.append(temp)
 
     return new_lst, temp
-
 
 def replace_the_string(new_lst, temp, sub_str):
     i = 0
@@ -55,8 +52,7 @@ def main():
     not_i = None
     poor_i = None
 
-    [ni:pi]=
-
+    # [ni:pi]=
 
     sub_str = "good"
     new_lst, temp = spliting_string(str, sub_str)
