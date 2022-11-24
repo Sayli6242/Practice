@@ -13,20 +13,24 @@
 """
 
 
-def runnerUp_Score(scores):
+def compute_runnerUp_Score(scores):
+    """
+    function for runnerUp Score
+    """
 
     x = scores.index(max(scores))
 
-    y = scores.pop(x)
+    scores.pop(x)
 
     z = max(scores)
-
-    print(f"the runner up score is {z}")
+    return z
 
 
 def main():
     scores = [45, 24, 56, 87, 95, 52]
-    score = runnerUp_Score(scores)
+    runnerUp_Score = compute_runnerUp_Score(scores)
+
+    print(f"the runner up score is {runnerUp_Score}")
 
 
 main()
