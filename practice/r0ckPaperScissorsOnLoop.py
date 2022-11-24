@@ -21,12 +21,12 @@ C: Scissors
 import random
 
 
-def check_computer_player_moves(choices):
+def check_computer_player_moves(choices, score):
     i = 0
     result = 0
     while i <= 10:
         player_choice = input(
-            "Enter your choice, select 1 option\n Rock \n Paper \n Scissors \nType your option here: "
+            "Enter your choice, select 1 option\n A. Rock \n B. Paper \n C. Scissors \nType your option here: "
         )
 
         print(player_choice, " is your choice")
@@ -40,22 +40,22 @@ def check_computer_player_moves(choices):
         # new_two = choices.index(computer_choice)
         # # print(new_two)
 
-        if player_choice == computer_choice:
+        if score[player_choice] == computer_choice:
             print("Match is DRAW ")
 
-        elif player_choice == "Scissors":
+        elif score[player_choice] == "Scissors":
             if computer_choice == "Paper":
                 print("player is winner!,Scissors beat Paper")
             else:
                 print("player is lost!, Rock beat Scissors")
 
-        elif player_choice == "Rock":
+        elif score[player_choice] == "Rock":
             if computer_choice == "Scissors":
                 print("player is winner!, Rock beat Scissors")
             else:
                 print("player is lost!, Paper covers Rock")
 
-        elif player_choice == "Paper":
+        elif score[player_choice] == "Paper":
             if computer_choice == "Rock":
                 print("player is winner!, Paper covers Rock")
             else:
@@ -64,8 +64,10 @@ def check_computer_player_moves(choices):
 
 
 def main():
+    score = {"A": "Rock", "B": "Paper", "C": "Scissors"}
+
     choices = ["Rock", "Paper", "Scissors"]
-    result = check_computer_player_moves(choices)
+    result = check_computer_player_moves(choices, score)
 
 
 main()
