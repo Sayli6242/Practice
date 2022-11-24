@@ -11,8 +11,8 @@ Observe what happens ?
 i = 0
 # take count
 while i <= 10:
-    print('hey user!')  
-    i = i + 1
+    print("hey user!")
+
 
 # callback hell
 
