@@ -1,6 +1,6 @@
 """
-Given an array of names of candidates in an election.
- A candidate name in the array represents a vote cast to the candidate. Print the name of candidates received Max vote. 
+# Given an array of names of candidates in an election.
+# A candidate name in the array represents a vote cast to the candidate. Print the name of candidates received Max vote. 
 
 Input :  votes =["john", "john", "mackie", 
                     "john", "john", "mackie", 
