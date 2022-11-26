@@ -1,1 +1,2 @@
-print(random_word)
+
+    # user_ans = input('Enter your answer: ')
