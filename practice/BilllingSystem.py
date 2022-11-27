@@ -23,33 +23,18 @@ def Perchase_items_and_Calculate_Bill(products):
     total = 0
     i = 0
     cart_dict = { }
+
     while i <= 10:
         user_perchase = input("Enter items in your cart, select Options\n A. Apple \n B. Banana \n C. Grapes \n D. Lemon \n E. exit \nType your option here: ")
        
         fruit = Options[user_perchase]
         #    increase count of user input option (ex. A ) in cart
-        if fruit in cart_dict.keys():
-            # if exist increse count by 1
-            cart_dict[fruit] += 1
-            # else count is initially 1
-        elif fruit in cart_dict.keys(): 
-            cart_dict[fruit] = 1
-            # if user chose to Exit calculate sum of all values of items in cart.
-            print(cart_dict)
-        else :
-            user_perchase == Options[user_perchase]
-            for value in products:
-                x = [products[value]]
-                (x[value]) = x
-                total = ([products.value(x)] * [cart_dict[value]])
-              
-                print(cart_dict[value])
-                # total = sum([products[value[value]]] * [cart_dict[value]])
-                # print(total)
+       
+
                 
            
-        # multiply the each value of key in card_dict with value of key in products.
-        # dictionary_name.values()
+        # # multiply the each value of key in card_dict with value of key in products.
+        # # dictionary_name.values()
 
 
 def main():

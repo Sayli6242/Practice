@@ -72,14 +72,6 @@ def Quiz_game(quiz_questions):
     print('Your score is: ',score)
 
 
-
-
-
-            
-        
-
-
-
 def main():
 
    

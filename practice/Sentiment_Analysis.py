@@ -42,6 +42,7 @@ def sentiment_analysis(bag_of_words):
         # check word present in dictionary
         if word in bag_of_words.keys():
             # sentiment_score = bag_of_words[word] 
+            # increse count of word
             sentiment_score = sentiment_score + bag_of_words[word]
     if sentiment_score >= 0:
         print('Good Movie')
