@@ -14,8 +14,6 @@ Output - sum
 """
 
 
-
-
 def sum_natural_num(x):
     sum_of_nat_num = 0
     for i in range(1,x):
