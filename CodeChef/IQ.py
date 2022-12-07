@@ -10,7 +10,7 @@ Input Format
 
 """
 x = int(input())
-if x < 170:
+if x + 7 > 170:
     print("Yes")
 else:
     print("No")
