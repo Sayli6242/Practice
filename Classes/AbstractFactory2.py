@@ -14,6 +14,7 @@ class lightBgColor(BgColor):
 class darkBgColor(BgColor):
 
     pass
+    
 
 
 class Text:
@@ -43,4 +44,4 @@ class DarkFactory(ThemeFactory):
 def client(ThemeFactory):
     # creatw text
     # create bg
-    main()
+    pass
