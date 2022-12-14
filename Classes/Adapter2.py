@@ -5,50 +5,39 @@
 
 
 class French_Person1:
+    def talk_french(self):
+        return "hola"
+
+
+class EnglishPerson:
     def __init__(self):
-        self.talk = []
+        self.words = "speaking english"
 
-    def gettalk(self, talk):
-        self.talk = talk
-
-    def print(self):
-        print(self.talk)
+    def talk(self):
+        print(self.words)
 
 
-class Translator(French_Person1):
-    def __init__(self, listen):
-        self.listen = listen
-
-    def gettalk(self, talk):
-        self.listen.gettalk([])
-
-    def getlisten(self, listen):
-        self.listen = listen
+class FrenchToEnglishTranslator(French_Person1, EnglishPerson):
+    def talk(self):
+        words = self.talk_french()
+        # converting french words to english
+        words = "hello"
+        print(words)
 
 
-class French_to_English_Translator(Translator):
-    def __init__(self, talk):
-        self.talk = talk
-
-    def listen(self):
-        self.talk.gettalk(["hi, good morning"])
-
-
-class American_Person2:
-    def __init__(self):
-        pass
-
-    def settranslator(self, translator):
-        self.translator = translator
-
-    def gettalk(self):
-        return self.translator.listen()
+def client_code(Ap2: EnglishPerson):
+    Ap2.talk()
 
 
 def main():
-    Fp = French_Person1()
-    T = Translator()
-    AP = American_Person2()
-    AP = French_to_English_Translator(T)
+    ap = EnglishPerson()
+    client_code(ap)
 
-    main()
+    fp = French_Person1()
+    # client_code(fp)
+
+    t = FrenchToEnglishTranslator()
+    client_code(t)
+
+
+main()
