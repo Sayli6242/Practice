@@ -12,13 +12,13 @@ Output Format
 T = int(input())
 for t in range(T):
     s, a, b, c = input().split()
-    num_s = int(s)
+    stock_price = int(s)
     num_a = int(a)
     num_b = int(b)
     num_c = int(c)
-    stock_per = (num_s * num_c) / 100
+    stock_per = (stock_price * num_c) / 100
     if stock_per > 0:
-        Total = num_s + stock_per
+        Total = stock_price + stock_per
 
         if Total in range(num_a, num_b):
             print("yes")
