@@ -17,7 +17,7 @@ class Item:
         self.discount
 
 
-class discount(Item):
+class discount:
     pass
 
 
