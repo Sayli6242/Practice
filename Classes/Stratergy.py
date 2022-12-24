@@ -5,29 +5,29 @@
 """
 
 
-class Item:
-    def __init__(self, price, discount):
-        self.price = price
-        self.discount = discount
+class Mario:
+    def __init__(self, attack):
+        self.attack = attack
 
-    def price(self):
-        self.price
-
-    def setdiscount(self):
-        self.discount
+    def setattack(self):
+        self.attack
 
 
-class discount:
+class attackStratergy:
     pass
 
 
-class discountOnSpecificItem(Item):
+class NormalAttack(attackStratergy):
+    pass
+
+
+class FireAttack(attackStratergy):
     pass
 
 
 def main():
-    Item = Item(discount)
-    Item.discount = discountOnSpecificItem
+    Mario = Mario()
+    Mario.attackStratergy = NormalAttack()
 
 
 main()
