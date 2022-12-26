@@ -13,8 +13,8 @@ class Mario:
         self.attack
 
 
-class attackStratergy:
-    pass
+class attackStratergy(Mario):
+    def 
 
 
 class NormalAttack(attackStratergy):
