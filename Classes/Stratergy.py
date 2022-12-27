@@ -14,15 +14,19 @@ class Mario:
 
 
 class attackStratergy(Mario):
-    def 
+    def attack(self, fire, water):
+        self.fire = fire
+        self.water = water
 
 
 class NormalAttack(attackStratergy):
-    pass
+    def water(self, water):
+        return water
 
 
 class FireAttack(attackStratergy):
-    pass
+    def fire(self, fire):
+        return fire
 
 
 def main():
