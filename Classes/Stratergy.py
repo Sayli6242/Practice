@@ -4,7 +4,7 @@
 
 """
 
-
+# should be composition
 class Mario:
     def __init__(self, attack):
         self.attack = attack
@@ -13,20 +13,20 @@ class Mario:
         self.attack
 
 
-class attackStratergy(Mario):
-    def attack(self, fire, water):
-        self.fire = fire
-        self.water = water
+# blueprint
+class attackStratergy:
+    def do_attack(self, attack):
+        pass
 
 
 class NormalAttack(attackStratergy):
-    def water(self, water):
-        return water
+    def attack(self, water):
+        self.attack = water
 
 
 class FireAttack(attackStratergy):
     def fire(self, fire):
-        return fire
+        self.attack = fire
 
 
 def main():
