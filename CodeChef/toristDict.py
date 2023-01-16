@@ -23,7 +23,7 @@ Note that the uppercase letters in Bytelandian remain uppercase in English, and 
 T, M = input().split()
 a = "abcdefghijklmnopqrstuvwxyz"
 A = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-for i in range(int(t)):
+for i in range(int(T)):
     x = input()
     for j in x:
         if j in A:
