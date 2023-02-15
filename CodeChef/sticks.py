@@ -13,12 +13,15 @@
 7) 
 
 """
-from intertool import combinations
+
 
 T = int(input())
 for t in range(T):
     N = int(input())
-    A = list(map(int,input().split()))
-    for i in A:
-        pairs = list(combinations(A, 2))
-        print(pairs)
+    A = list(map(int, input().split()))
+    lst = []
+    for i in range(0, N - 1):
+        for j in range(i + 1, N - 1):
+            if lst[i] and lst[j] in A:
+                z = lst[i] * lst[j]
+                print(z)
