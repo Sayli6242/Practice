@@ -6,3 +6,11 @@ Find the minimum number of moves required to make all the elements of the array 
 
 
 """
+"""
+1) simpli we have to find difference between the maximum and mininum between array
+"""
+T = int(input())
+for t in range(T):
+    N = int(input())
+    A = list(map(int,input().split()))
+    print(max(A)-min(A))
