@@ -24,6 +24,7 @@ for t in range(T):
     A = list(map(int, input().split()))
     no_of_gifts = int(N)
     no_of_turns = int(K)*2
+    A.sort(reverse=True)
     lst_1 = [ ]
     lst_2 = [ ]
     for i in range(no_of_gifts):  
