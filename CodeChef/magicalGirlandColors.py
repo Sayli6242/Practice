@@ -13,14 +13,27 @@ She would like to minimize the maximum amount of liquid among all of Red, Green 
 
 """
 """
-1) 
-2)
-3)
-
-
-
+1) find maximum amount of liquids in all potions.
+2) again find maximum value of liquids in them
+3) check  each amout of liquid is equal to maximum amount of liquid upto given moves.
+4) if yes then half the amount of liquid
+5) if moves are done then stop
+6) print maximum amount of liquid amongst 3 of them.
 """
 T = int(input())
 for t in range(T):
-    R,G,B,M = input().split()
+    R,G,B,M = list(map(int,input().split()))
+    r = list(map(int, input().split()))
+    g = list(map(int, input().split()))
+    b = list(map(int, input().split()))
+    amount_of_liquid = [max(r),max(g),max(b)]
+    for i in range(M):
+        max_amount_of_liquid = max(amount_of_liquid)
+        for i in range(len(amount_of_liquid)):
+            if amount_of_liquid[i] ==  max_amount_of_liquid:
+                amount_of_liquid[i] = amount_of_liquid[i]//2
+                break
+
+    print(max(amount_of_liquid))
+        
     
