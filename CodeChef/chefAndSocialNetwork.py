@@ -26,10 +26,18 @@ N ,M = input().split()
 no_of_special_frnd = int(N)
 no_of_post = int(M)
 A = list(map(int, input().split()))
+list_f = [ ]
+list_p = [ ]
+list_s = [ ]
 for i in range(no_of_post):
-    f = int(input())
-    p = int(input())
-    s = input()
-    for i in A:
-        if i == f:
-            pass
+    f,p,s = list(input().split())
+    list_f.append(int(f))
+    list_p.append(int(p))
+    list_s.append(s)
+special_frnd_lst = [ ]
+for i in range(no_of_special_frnd):
+    for j in range(len(list_f)):
+        if A[i] == A[0]:
+            special_frnd = list_f.pop(j)   
+            special_frnd_lst.append(special_frnd) 
+            break
