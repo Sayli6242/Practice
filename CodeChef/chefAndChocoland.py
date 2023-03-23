@@ -1,5 +1,14 @@
 """
+You are a poor person in ChocoLand. Here, people eat chocolates daily instead of normal food. 
+There is only one shop near your home; this shop is closed on Sunday, but open on all other days of the week. 
+You may buy at most one box of N chocolates from this shop on each day when it is open.
 
+Currently, it's Monday, and you need to survive for the next S days (including the current day). 
+You have to eat K chocolates everyday (including the current day) to survive. 
+Do note that you are allowed to buy the a chocolate box and eat from it on the same day.
+
+Compute the minimum number of days on which you need to buy from the shop so that you can survive the next S days, 
+or determine that it isn't possible to survive.
 
 
 
