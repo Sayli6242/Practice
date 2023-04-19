@@ -12,15 +12,15 @@
 """
 
 
-
 import click
 
 @click.command()
 @click.option('--add', default = 1, help ='To add contact' )
-
 @click.option('--contact',prompt="contact",default=1,help='enter contact,you want to add')
 @click.option('--name',prompt='username',help ='enter username of contact')
 @click.option('--email',prompt='Email',help ='enter Email address of contact')
+
+# add & search = argument
 
 def phonebook(name,contact):
     for i in range(contact):
@@ -62,8 +62,7 @@ if __name__ == '__main__':
     names = [ ]
     numbers = [ ]
     num = 3 
-    
-    
+      
     add(names,numbers,num)
     search(num,names,numbers)
     phonebook()

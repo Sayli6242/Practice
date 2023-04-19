@@ -27,4 +27,5 @@ for t in range(T):
             popped = p.pop(0)
             opp_team.append(popped)
             count+=1
-    
+    print(chef_team)
+    print(opp_team)
