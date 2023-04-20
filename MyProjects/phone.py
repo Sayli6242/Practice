@@ -1,7 +1,5 @@
 # write data to a text file using python!
 
-
-
 name = open('phone.txt', 'a')
 name.write(input('name:  '))
 name.close()

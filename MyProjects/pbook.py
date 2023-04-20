@@ -1,12 +1,30 @@
 import click
 
 
+# @click.command()
+# @click.argument('entity')
+# @click.argument('operation')
+# def touch(entity,operation):
+#     """Print FILENAME."""
+#     click.echo(entity,operation)
+
+
+
 @click.command()
-@click.argument('entity')
-@click.argument('operation')
-def touch(entity,operation):
-    """Print FILENAME."""
-    click.echo()
+@click.argument('input', type=click.File('rb'))
+@click.argument('output', type=click.File('wb'))
+def inout(input, output):
+    """Copy contents of INPUT to OUTPUT."""
+    while True:
+        chunk = input.read(1024)
+        if not chunk:
+            break
+        output.write(chunk)
+
+
+
+
+
 
 # import click
 
@@ -20,4 +38,4 @@ def touch(entity,operation):
 #         click.echo(f"Hello {name}!")
 
 if __name__ == '__main__':
-    touch()
+    inout()
