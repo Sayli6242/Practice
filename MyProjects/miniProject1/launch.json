@@ -12,8 +12,8 @@
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": [
-                "a.txt",
-                "b.txt"
+                "add.txt",
+                "search.txt"
             ]
         }
     ]
