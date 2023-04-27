@@ -10,7 +10,7 @@
         - else, show not found.
 
 """
-
+import sqlite3
 import click
 
 
@@ -18,11 +18,18 @@ import click
 @click.argument('entity',help= ' enter entity ,can be "contact"')
 @click.argument('operation', help = 'enter mode, it can be "search"/ "add"')
 def phonebook(entity,operation):
-
+   
+    if operation == add:
+        pass
 
     click.echo(entity,operation)
 
+def add():
+    
+    pass
 
+def search():
+    pass
 
 # @click.command()
 # @click.argument('input', type=click.File('c'))
@@ -51,7 +58,8 @@ def phonebook(entity,operation):
 
 if __name__ == '__main__':
     phonebook()
-
+    add()
+    search()
 
 
 
