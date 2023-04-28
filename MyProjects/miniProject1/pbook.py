@@ -13,54 +13,41 @@
 import sqlite3
 import click
 
-
+# @click is decorator 
 @click.command()
-@click.argument('entity',help= ' enter entity ,can be "contact"')
-@click.argument('operation', help = 'enter mode, it can be "search"/ "add"')
+@click.argument('entity')
+@click.argument('operation')
 def phonebook(entity,operation):
-   
-    if operation == add:
+    if operation == 'add':
+        add_contact()   
+
+    if operation == 'search':
+        search_contact_by_details()
+       
+    # click.echo(entity,operation)
+def Create_table_If_not_exist():
+    # check if table exist return from function
+    # if not exist create
+    con = sqlite3.connect("database.db")
+    cur.execute("CREATE TABLE Phonebook(username, contact, EmailId)")
+    con.cursor()
+    pass
+
+def add_contact():
+    name = input("username")
+    contact = int(input("contact"))
+    EmailId = input("EmailId")
+        
+
+u8
+def search_contact_by_details():
         pass
-
-    click.echo(entity,operation)
-
-def add():
-    
-    pass
-
-def search():
-    pass
-
-# @click.command()
-# @click.argument('input', type=click.File('c'))
-# @click.argument('output', type=click.File('wb'))
-# def inout(input, output):
-#     """Copy contents of INPUT to OUTPUT."""
-#     while True:
-#         chunk = input.read(1024)
-#         if not chunk:
-#             break
-#         output.write(chunk)
-
-
-
-# import click
-
-# @click.command()
-# @click.option('--count', default=1, help='Number of greetings.')
-# @click.option('--name', prompt='Your name',
-#               help='The person to greet.')
-# def hello(count, name):
-#     """Simple program that greets NAME for a total of COUNT times."""
-#     for x in range(count):
-#         click.echo(f"Hello {name}!")
 
 
 if __name__ == '__main__':
+    Create_table_If_not_exist()
     phonebook()
-    add()
-    search()
-
+    
 
 
 
