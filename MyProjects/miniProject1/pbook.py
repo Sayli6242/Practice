@@ -8,7 +8,8 @@
     - search by detail
         - if found ,show details
         - else, show not found.
-
+4) delete
+5) update
 """
 import sqlite3
 import click
@@ -23,6 +24,12 @@ def phonebook(entity,operation):
 
     if operation == 'search':
         search_contact_by_details()
+    
+    if operation == 'delete':
+        delete_contact()
+
+    if update == 'update':
+        update_contact()
        
     # click.echo(entity,operation)
 def Create_table_If_not_exist():
@@ -58,16 +65,19 @@ def add_contact():
 
 
 def search_contact_by_details():
-    user_input = input("Write anything you remember name or phone number.")
+    search_term = input("Write anything you remember name or phone number: ").strip()
+
     con = sqlite3.connect("database.db")
     cursor = con.cursor()
     # cursor.execute('SELECT name,phone FROM contacts WHERE name=?', (user_input,))
       
     # Construct the SQL query with the LIKE operator
     # The LIKE operator is used in SQL to perform a pattern matching of a string value against a search pattern.
-    sql_query = "SELECT * FROM contacts WHERE name LIKE ? OR phone LIKE ?"
+    sql_query = "SELECT * FROM contacts WHERE name LIKE? OR phone LIKE ?"
 
-    search_term = f"%{user_input}%"
+# SELECT * FROM contacts WHERE name LIKE '%7260%'  OR phone LIKE '%7260%'
+
+    search_term = f"%{search_term}%"
 
     # Execute the query with the search term
     cursor.execute(sql_query, (search_term, search_term))
@@ -76,7 +86,7 @@ def search_contact_by_details():
     # if user input is incomplete string or incomplete num, show all possible matches
     # match to phonenum and name both column
 
-    # Display the matching contacts
+    # Display the matching contacts 
     if len(contacts) > 0:
         for row in contacts:
             print(row)
@@ -87,20 +97,14 @@ def search_contact_by_details():
     cursor.close()
     con.close()
 
+def delete_contact():
+    pass
+
+
+def update_contact():
+    pass
+
 if __name__ == '__main__':
     Create_table_If_not_exist()
     phonebook()
     
-
-
-
-
-
-
-
-
-
-
-
-
-
