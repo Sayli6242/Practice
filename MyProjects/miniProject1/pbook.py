@@ -39,6 +39,7 @@ def Create_table_If_not_exist():
         print("Table exists.")
     else:
         res = cursor.execute("CREATE TABLE contacts(name, phone, EmailId)")
+
     cursor.close()
     con.close()
     
@@ -57,17 +58,30 @@ def add_contact():
 
 
 def search_contact_by_details():
-    z = input("Write anything you remember name or phone number.")
+    user_input = input("Write anything you remember name or phone number.")
     con = sqlite3.connect("database.db")
     cursor = con.cursor()
-    cursor.execute('SELECT name,phone FROM contacts WHERE name=?', (z,))
+    # cursor.execute('SELECT name,phone FROM contacts WHERE name=?', (user_input,))
+      
+    # Construct the SQL query with the LIKE operator
+    # The LIKE operator is used in SQL to perform a pattern matching of a string value against a search pattern.
+    sql_query = "SELECT * FROM contacts WHERE name LIKE ? OR phone LIKE ?"
+
+    search_term = f"%{user_input}%"
+
+    # Execute the query with the search term
+    cursor.execute(sql_query, (search_term, search_term))
 
     contacts = cursor.fetchall()
     # if user input is incomplete string or incomplete num, show all possible matches
     # match to phonenum and name both column
 
-    for row in contacts:
-        print(row)
+    # Display the matching contacts
+    if len(contacts) > 0:
+        for row in contacts:
+            print(row)
+    else:
+        print("No contacts found.")
 
 
     cursor.close()
