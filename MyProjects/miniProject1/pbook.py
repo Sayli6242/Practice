@@ -28,7 +28,7 @@ def phonebook(entity,operation):
     if operation == 'delete':
         delete_contact()
 
-    if update == 'update':
+    if operation == 'update':
         update_contact()
        
     # click.echo(entity,operation)
@@ -52,9 +52,10 @@ def Create_table_If_not_exist():
     
 
 def add_contact():
-    name = input("name")
-    phone = int(input("phone"))
-    EmailId = input("EmailId")
+    # if name exist do not add contact
+    name = input("name").strip()
+    phone = int(input("phone").strip())
+    EmailId = input("EmailId").strip()
 
     con = sqlite3.connect("database.db")
     cursor = con.cursor()
@@ -75,7 +76,7 @@ def search_contact_by_details():
     # The LIKE operator is used in SQL to perform a pattern matching of a string value against a search pattern.
     sql_query = "SELECT * FROM contacts WHERE name LIKE? OR phone LIKE ?"
 
-# SELECT * FROM contacts WHERE name LIKE '%7260%'  OR phone LIKE '%7260%'
+    # SELECT * FROM contacts WHERE name LIKE '%7260%'  OR phone LIKE '%7260%'
 
     search_term = f"%{search_term}%"
 
@@ -93,16 +94,55 @@ def search_contact_by_details():
     else:
         print("No contacts found.")
 
-
     cursor.close()
     con.close()
 
+
+
+
 def delete_contact():
-    pass
+
+    delete_term = input("enter name of contact you want to delete: ").strip()
+
+    con = sqlite3.connect('database.db')
+
+    cursor = con.cursor()
+
+    sql_query = "DELETE FROM contacts WHERE name = ?"
+
+    cursor.execute(sql_query, (delete_term,))
+
+    contacts = cursor.fetchall()
+
+    con.commit()
+    
+    cursor.close()
+
+    con.close()
+
+    print('contact delete successfully')
+
+
+
 
 
 def update_contact():
-    pass
+
+    name = input("Enter the name of the contact you want to update: ").strip()
+    new_phone = int(input("Enter the new phone number: ").strip())
+    new_email = input("Enter the new emailId: ").strip()
+
+    con = sqlite3.connect("database.db")
+
+    cursor = con.cursor()
+
+    cursor.execute('UPDATE contacts SET phone=?, EmailId=? WHERE name=?', (new_phone, new_email, name))
+    contacts = cursor.fetchall()
+    con.commit()
+
+    con.close()
+
+    print(f'{name} contact details successfully updated.')
 
 if __name__ == '__main__':
     Create_table_If_not_exist()
