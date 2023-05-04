@@ -4,9 +4,9 @@ shopping cart application
 2) define shopping_cart function
     - display welcome massage 
     - in while loop(break when user choose exit) 
-        - display menu options(add_item , view_cart and exit), ask for user choice.
+        - display menu options(add_item , view_cart, calculate_total_price_of_items and exit), ask for user choice.
         - depending on user choice trigger the corresponding function.
-        - if choice is exist then break the program
+        - if choice is exit then break the program
 3) if add items
     - display items and prices to user
     - get user input as options (ex: A) B) C))
@@ -24,36 +24,59 @@ shopping cart application
 
 """
 import click
+
+items = {'A':{"suger": 50},
+             'B':{"flour": 30},
+             'C':{"oil": 100},
+             'D':{ "beans": 150}
+             } 
+
+selected_items = []
+
 @click.command()
-@click.argument('entity')
-@click.argument('operation')
-def shopping_cart(entity,operation):
-    if operation == 'add':
-        add_contact()   
+def shopping_cart():
+    click.echo('welcome to shop, choose corresponding options')
+    while True :
+        click.echo('In which of the following operation you wants to perform:\n 1) add_items \n 2) view_Cart \n 3) calculate_total_price  \n 4) exit')
+        option_as_input = input('Enter operation you wants to perform: ').strip()
 
-items = {"suger": 50, "flour": 30, "oil": 100, "beans": 150} 
-selected_items = [] 
+        if option_as_input == 'add_items':
+            add_items()
+
+        elif option_as_input == 'view_cart':
+            view_Cart()  
+
+        elif option_as_input == 'calculate_total_price':
+            calculate_total_price_of_items()
+
+        elif option_as_input == 'exit':
+            
+            break
+
+        else:
+            print('invalid task. try again')
 
 
-def add_contact():
+def add_items():
+    print('A) suger = 50 \n B) flour = 30  \n C) Oil = 100 \n D) Beans = 150')
+
+    user_input = input('enter options for items: ').strip()
+    for key in items[user_input]:
+        selected_items.append(key)
+    print(selected_items)
+    
+
+
+def view_Cart():
+    if selected_items == [ ]:
+        pass
+
+def calculate_total_price_of_items():
     pass
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 if __name__ == '__main__':
+    
     shopping_cart()

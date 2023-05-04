@@ -9,8 +9,8 @@
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": [
-                "contact",
-                "delete"
+                "customer",
+                "add_items"
             ]
         }
     ]
