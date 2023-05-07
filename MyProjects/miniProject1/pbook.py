@@ -11,6 +11,7 @@
 4) delete
 5) update
 """
+
 import sqlite3
 import click
 
@@ -29,9 +30,10 @@ def phonebook(entity,operation):
         delete_contact()
 
     if operation == 'update':
-        update_contact()
-       
+        update_contact()     
     # click.echo(entity,operation)
+
+
 def Create_table_If_not_exist():
     # check if table exist return from function
     # if not exist create
@@ -53,19 +55,27 @@ def Create_table_If_not_exist():
 
 def add_contact():
     # if name exist do not add contact
-    name = input("name").strip()
-    phone = int(input("phone").strip())
-    EmailId = input("EmailId").strip()
+    try:    
+        name = input("name").strip()
+        phone = int(input("phone").strip())
+        EmailId = input("EmailId").strip()
 
-    con = sqlite3.connect("database.db")
-    cursor = con.cursor()
-    cursor.execute('INSERT INTO contacts (name, phone,EmailId) VALUES (?, ?, ?)', (name, phone,EmailId))
-    con.commit()
-    con.close()
-    click.echo(f'contact successfully added')
+        con = sqlite3.connect("database.db")
+        cursor = con.cursor()
+        cursor.execute('INSERT INTO contacts (name, phone,EmailId) VALUES (?, ?, ?)', (name, phone,EmailId))
+        con.commit()
+        con.close()
+        click.echo(f'contact successfully added')
 
+    except ValueError:
+        print("Error: phone number must be an integer.")
+        
+    except sqlite3.Error as e:
+        print("Error executing query:", e)
 
+        
 def search_contact_by_details():
+    
     search_term = input("Write anything you remember name or phone number: ").strip()
 
     con = sqlite3.connect("database.db")
@@ -98,8 +108,6 @@ def search_contact_by_details():
     con.close()
 
 
-
-
 def delete_contact():
 
     delete_term = input("enter name of contact you want to delete: ").strip()
@@ -124,8 +132,6 @@ def delete_contact():
 
 
 
-
-
 def update_contact():
 
     name = input("Enter the name of the contact you want to update: ").strip()
@@ -143,6 +149,9 @@ def update_contact():
     con.close()
 
     print(f'{name} contact details successfully updated.')
+
+
+
 
 if __name__ == '__main__':
     Create_table_If_not_exist()

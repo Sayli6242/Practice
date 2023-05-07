@@ -23,6 +23,7 @@ shopping cart application
     - and display addition of all items.
 
 """
+
 import click
 
 items = {'A':{"suger": 50},
@@ -32,6 +33,7 @@ items = {'A':{"suger": 50},
              } 
 
 selected_items = []
+
 
 @click.command()
 def shopping_cart():
@@ -59,23 +61,37 @@ def shopping_cart():
 
 def add_items():
     print('A) suger = 50 \n B) flour = 30  \n C) Oil = 100 \n D) Beans = 150')
-
     user_input = input('enter options for items: ').strip()
     for key in items[user_input]:
         selected_items.append(key)
     print(selected_items)
-    
 
 
 def view_Cart():
+    count_of_each_item = { }
+
     if selected_items == [ ]:
-        pass
+        print('The cart is empty')    
+    else:
+        for items in selected_items:
+            if items not in selected_items:
+                items = 1
+            else:
+                items += 1
+
+        print(f'{items}: {count_of_each_item}')    
+
+
+
+
 
 def calculate_total_price_of_items():
-    pass
 
-
-
+    counts = {}
+    for item in items:
+        if item in counts:
+            counts[item]["count"] += 1
+        
 
 if __name__ == '__main__':
     
