@@ -8,10 +8,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": [
-                "customer",
-                "add_items"
-            ]
+            "args": []
         }
     ]
 }

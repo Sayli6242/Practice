@@ -75,80 +75,86 @@ def add_contact():
 
         
 def search_contact_by_details():
-    
-    search_term = input("Write anything you remember name or phone number: ").strip()
+    try:    
+        search_term = input("Write anything you remember name or phone number: ").strip()
 
-    con = sqlite3.connect("database.db")
-    cursor = con.cursor()
-    # cursor.execute('SELECT name,phone FROM contacts WHERE name=?', (user_input,))
-      
-    # Construct the SQL query with the LIKE operator
-    # The LIKE operator is used in SQL to perform a pattern matching of a string value against a search pattern.
-    sql_query = "SELECT * FROM contacts WHERE name LIKE? OR phone LIKE ?"
+        con = sqlite3.connect("database.db")
+        cursor = con.cursor()
+        # cursor.execute('SELECT name,phone FROM contacts WHERE name=?', (user_input,))
+        
+        # Construct the SQL query with the LIKE operator
+        # The LIKE operator is used in SQL to perform a pattern matching of a string value against a search pattern.
+        sql_query = "SELECT * FROM contacts WHERE name LIKE? OR phone LIKE ?"
 
-    # SELECT * FROM contacts WHERE name LIKE '%7260%'  OR phone LIKE '%7260%'
+        # SELECT * FROM contacts WHERE name LIKE '%7260%'  OR phone LIKE '%7260%'
 
-    search_term = f"%{search_term}%"
+        search_term = f"%{search_term}%"
 
-    # Execute the query with the search term
-    cursor.execute(sql_query, (search_term, search_term))
+        # Execute the query with the search term
+        cursor.execute(sql_query, (search_term, search_term))
 
-    contacts = cursor.fetchall()
-    # if user input is incomplete string or incomplete num, show all possible matches
-    # match to phonenum and name both column
+        contacts = cursor.fetchall()
+        # if user input is incomplete string or incomplete num, show all possible matches
+        # match to phonenum and name both column
 
-    # Display the matching contacts 
-    if len(contacts) > 0:
-        for row in contacts:
-            print(row)
-    else:
-        print("No contacts found.")
+        # Display the matching contacts 
+        if len(contacts) > 0:
+            for row in contacts:
+                print(row)
+        else:
+            print("No contacts found.")
+    except sqlite3.Error as e:
+        print("Error executing query:", e)
 
-    cursor.close()
-    con.close()
+        cursor.close()
+        con.close()
 
 
 def delete_contact():
+    try:
+        delete_term = input("enter name of contact you want to delete: ").strip()
 
-    delete_term = input("enter name of contact you want to delete: ").strip()
+        con = sqlite3.connect('database.db')
 
-    con = sqlite3.connect('database.db')
+        cursor = con.cursor()
 
-    cursor = con.cursor()
+        sql_query = "DELETE FROM contacts WHERE name = ?"
 
-    sql_query = "DELETE FROM contacts WHERE name = ?"
+        cursor.execute(sql_query, (delete_term,))
 
-    cursor.execute(sql_query, (delete_term,))
+        contacts = cursor.fetchall()
 
-    contacts = cursor.fetchall()
+        con.commit()
+    except sqlite3.Error as e:
+        print("Error executing query:", e)
 
-    con.commit()
-    
-    cursor.close()
+        cursor.close()
 
-    con.close()
+        con.close()
 
-    print('contact delete successfully')
+        print('contact delete successfully')
 
 
 
 def update_contact():
+    try:
+        name = input("Enter the name of the contact you want to update: ").strip()
+        new_phone = int(input("Enter the new phone number: ").strip())
+        new_email = input("Enter the new emailId: ").strip()
 
-    name = input("Enter the name of the contact you want to update: ").strip()
-    new_phone = int(input("Enter the new phone number: ").strip())
-    new_email = input("Enter the new emailId: ").strip()
+        con = sqlite3.connect("database.db")
 
-    con = sqlite3.connect("database.db")
+        cursor = con.cursor()
 
-    cursor = con.cursor()
+        cursor.execute('UPDATE contacts SET phone=?, EmailId=? WHERE name=?', (new_phone, new_email, name))
+        contacts = cursor.fetchall()
+        con.commit()
+    except sqlite3.Error as e:
+        print("Error executing query:", e)
+        
+        con.close()
 
-    cursor.execute('UPDATE contacts SET phone=?, EmailId=? WHERE name=?', (new_phone, new_email, name))
-    contacts = cursor.fetchall()
-    con.commit()
-
-    con.close()
-
-    print(f'{name} contact details successfully updated.')
+        print(f'{name} contact details successfully updated.')
 
 
 
