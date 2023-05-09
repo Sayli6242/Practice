@@ -17,6 +17,8 @@ shopping cart application
     - check if cart is empty 
         -display massage('cart is empty)
     - if not, display items and their count by iterating the list. 
+    
+    # write in detail how we get count of each item
 
 4) calculate total price of items
     - multiply the count of each item with their price.
@@ -27,6 +29,7 @@ shopping cart application
 
 import click
 operations = {'1': 'add_'}
+# SPLIT THIS DICT INTO TWO 
 items = {'A':{"suger": 50},
              'B':{"flour": 30},
              'C':{"oil": 100},
@@ -73,12 +76,12 @@ def add_items():
         print(selected_items)
     except ValueError:
         print("Error: options must be an capital letter.")
-      
+  
 
 
 def view_Cart():
+    # global count_of_each_item
     count_of_each_item = {}
-
     if selected_items == [ ]:
         print('The cart is empty')    
     else:
@@ -93,17 +96,33 @@ def view_Cart():
 
 def calculate_total_price_of_items():
 
+    # total_price = 0
+    # for item in selected_items:
+
+    #     item_price = items[]
+
+    #     item_price = items[item].values()[0]  # get the price of the item
+
+    #     item_count = count_of_each_item.get(item)  # get the count of the item, default to 1 if not found
+
+    #     item_total_price = item_price * item_count  # calculate the total price of the item
+
+    #     total_price += item_total_price 
+
     total_price = 0
     for item in selected_items:
+
         # extract the name of the item from the dictionary
         item_name = list(items.keys())[0]
+
 
         # get the price of the item from the 'items' dictionary
         item_price = items[item_name][list(items[item_name].keys())[0]]  
 
         total_price += item_price  # add the price to the total
-   
+
     print(total_price)
+
 
 if __name__ == '__main__':
     
