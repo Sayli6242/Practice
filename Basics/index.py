@@ -87,7 +87,7 @@ print(sum(nums))
 print(teams.index("bulgeria"))                  #to find index
 
 for x in teams:                                  # instead of x u can use any variabel
-print(x)
+  print(x)
 
 for index, team in enumerate(teams):
   print(index, team)

@@ -11,7 +11,7 @@
 4) delete
 5) update
 """
-
+import re
 import sqlite3
 import click
 
@@ -51,14 +51,25 @@ def Create_table_If_not_exist():
 
     cursor.close()
     con.close()
-    
+
+def check_validation_of_email(EmailId):
+    pattern = r"[^@]+@[^@]+\.[^@]+"
+    if re.match(pattern, EmailId):
+        print("Valid email")
+    else:
+        print("Invalid email")
+#  check email is valid or not
+#  if not then exit program and print massage 'invalid email'.
 
 def add_contact():
     # if name exist do not add contact
     try:    
         name = input("name").strip()
+
         phone = int(input("phone").strip())
         EmailId = input("EmailId").strip()
+        
+        
 
         con = sqlite3.connect("database.db")
         cursor = con.cursor()

@@ -26,7 +26,7 @@ shopping cart application
     - and display addition of all items.
 
 """
-
+import re
 import click
 operations = {'1': 'add_'}
 # SPLIT THIS DICT INTO TWO 
@@ -96,32 +96,14 @@ def view_Cart():
 
 def calculate_total_price_of_items():
 
-    # total_price = 0
-    # for item in selected_items:
-
-    #     item_price = items[]
-
-    #     item_price = items[item].values()[0]  # get the price of the item
-
-    #     item_count = count_of_each_item.get(item)  # get the count of the item, default to 1 if not found
-
-    #     item_total_price = item_price * item_count  # calculate the total price of the item
-
-    #     total_price += item_total_price 
-
     total_price = 0
     for item in selected_items:
-
-        # extract the name of the item from the dictionary
-        item_name = list(items.keys())[0]
-
-
-        # get the price of the item from the 'items' dictionary
-        item_price = items[item_name][list(items[item_name].keys())[0]]  
-
-        total_price += item_price  # add the price to the total
-
-    print(total_price)
+        for key , value in items.items():
+            if item in value.keys():
+                total_price = total_price + value[item]
+                break
+    print('total price is: ',total_price)
+    
 
 
 if __name__ == '__main__':
