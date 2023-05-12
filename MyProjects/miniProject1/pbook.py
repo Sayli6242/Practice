@@ -55,20 +55,50 @@ def Create_table_If_not_exist():
 def check_validation_of_email(EmailId):
     pattern = r"[^@]+@[^@]+\.[^@]+"
     if re.match(pattern, EmailId):
-        print("Valid email")
+        return True
     else:
-        print("Invalid email")
+        return False
 #  check email is valid or not
 #  if not then exit program and print massage 'invalid email'.
+
+def check_name_validation(name):
+    pattern = r'^[a-zA-Z ]+$'
+    if re.match(pattern, name):
+        return True
+    else:
+        return False
+# check name is valid or not
+# if not then print massage('invalid name') and exit program
+def check_phone_validation(phone):
+    if phone >= 1 and phone <= 10:
+        return True
+        
+    else:
+        return False
+# check phone number is integer of given range or not
+#  if not then print massage('invalid phone number') and exit program
 
 def add_contact():
     # if name exist do not add contact
     try:    
         name = input("name").strip()
-
-        phone = int(input("phone").strip())
-        EmailId = input("EmailId").strip()
+        if not check_name_validation(name):
+            print('Invalid name format') 
+            return
         
+        
+        
+        phone = int(input("phone").strip())
+        if not check_phone_validation(phone):
+            print('the integer must be in range 1-10')
+            return
+        
+
+
+        EmailId = input("EmailId").strip()
+        if not check_validation_of_email(EmailId):
+            print('invalid Email')
+            return
         
 
         con = sqlite3.connect("database.db")
@@ -78,8 +108,8 @@ def add_contact():
         con.close()
         click.echo(f'contact successfully added')
 
-    except ValueError:
-        print("Error: phone number must be an integer.")
+    # except ValueError:
+    #     print("Error: phone number must be an integer.")
         
     except sqlite3.Error as e:
         print("Error executing query:", e)
@@ -150,8 +180,26 @@ def delete_contact():
 def update_contact():
     try:
         name = input("Enter the name of the contact you want to update: ").strip()
+        if not check_name_validation(name):
+            print('Invalid name format') 
+            return
+        else:
+            return
+        
         new_phone = int(input("Enter the new phone number: ").strip())
-        new_email = input("Enter the new emailId: ").strip()
+        if not check_phone_validation(new_phone):
+            print('the integer must be in range 1-10')
+            return
+        else:
+            return
+
+        new_email = input("Enter the new emailId: ").strip()    
+        if not check_validation_of_email(new_email):
+            print('invalid Email')
+            return
+        else:
+            return
+
 
         con = sqlite3.connect("database.db")
 

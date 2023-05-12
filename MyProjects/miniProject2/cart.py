@@ -46,7 +46,10 @@ def shopping_cart():
         while True :
             click.echo('In which of the following operation you wants to perform:\n 1) add_items \n 2) view_Cart \n 3) calculate_total_price  \n 4) exit')
             option_as_input = int(input('Enter operation you wants to perform: ').strip())
-
+            if not check_validation_for_option_as_input(option_as_input):
+                print('choice must be an number from given options')
+                return
+            
             if option_as_input == 1:
                 add_items()
 
@@ -62,22 +65,32 @@ def shopping_cart():
 
             else:
                 print('invalid task. try again')
-    except ValueError:
-        print("Error: options must be an integer")
+    except Exception as e:
+        print(e)
 
+def check_validation_for_option_as_input(option_as_input):
+    if option_as_input >= 1 and option_as_input <= 4:
+        return True
+        
+    else:
+        return False
 
 
 def add_items():
     try:
         print('A) suger = 50 \n B) flour = 30  \n C) Oil = 100 \n D) Beans = 150')
-        user_input = input('enter options for items: ').strip()
+        user_input = input('enter options for items: ').strip().upper()
+        if user_input not in items.keys():
+            print('select options from given choices')
+        else:
+            return
+  
         for key in items[user_input]:
             selected_items.append(key)
         print(selected_items)
-    except ValueError:
-        print("Error: options must be an capital letter.")
-  
-
+    
+    except Exception as e:
+        print(e)
 
 def view_Cart():
     # global count_of_each_item
