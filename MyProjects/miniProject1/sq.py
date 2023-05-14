@@ -1,7 +1,19 @@
 import sqlite3
+from pbook import update_contact
+def add_contact_query():
+
+    con = sqlite3.connect("database.db")
+    cursor = con.cursor()
+    cursor.execute('INSERT INTO contacts (name, phone,EmailId) VALUES (?, ?, ?)', (name, phone,EmailId))
+    con.commit()
+    con.close()
+    click.echo(f'contact successfully added')
+
+
+update_contact()
 # import pbook
 
-pbook.add_contact()
+# pbook.add_contact()
 
 # Connect to the database
 conn = sqlite3.connect('mydatabase.db')

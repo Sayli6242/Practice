@@ -22,7 +22,6 @@ import click
 def phonebook(entity,operation):
     if operation == 'add':
         add_contact()   
-
     if operation == 'search':
         search_contact_by_details()
     
@@ -33,11 +32,9 @@ def phonebook(entity,operation):
         update_contact()     
     # click.echo(entity,operation)
 
-
 def Create_table_If_not_exist():
     # check if table exist return from function
-    # if not exist create
-    
+    # if not exist create 
     con = sqlite3.connect("database.db")
     cursor = con.cursor()
     res = cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='contacts'")
@@ -48,7 +45,6 @@ def Create_table_If_not_exist():
         print("Table exists.")
     else:
         res = cursor.execute("CREATE TABLE contacts(name, phone, EmailId)")
-
     cursor.close()
     con.close()
 
@@ -69,10 +65,10 @@ def check_name_validation(name):
         return False
 # check name is valid or not
 # if not then print massage('invalid name') and exit program
+
 def check_phone_validation(phone):
     if phone >= 1 and phone <= 10:
-        return True
-        
+        return True     
     else:
         return False
 # check phone number is integer of given range or not
@@ -85,21 +81,16 @@ def add_contact():
         if not check_name_validation(name):
             print('Invalid name format') 
             return
-        
-        
-        
+              
         phone = int(input("phone").strip())
         if not check_phone_validation(phone):
             print('the integer must be in range 1-10')
             return
         
-
-
         EmailId = input("EmailId").strip()
         if not check_validation_of_email(EmailId):
             print('invalid Email')
             return
-        
 
         con = sqlite3.connect("database.db")
         cursor = con.cursor()
@@ -107,37 +98,27 @@ def add_contact():
         con.commit()
         con.close()
         click.echo(f'contact successfully added')
-
     # except ValueError:
-    #     print("Error: phone number must be an integer.")
-        
+    #     print("Error: phone number must be an integer.")       
     except sqlite3.Error as e:
         print("Error executing query:", e)
-
-        
+    
 def search_contact_by_details():
     try:    
         search_term = input("Write anything you remember name or phone number: ").strip()
-
         con = sqlite3.connect("database.db")
         cursor = con.cursor()
-        # cursor.execute('SELECT name,phone FROM contacts WHERE name=?', (user_input,))
-        
+        # cursor.execute('SELECT name,phone FROM contacts WHERE name=?', (user_input,))      
         # Construct the SQL query with the LIKE operator
         # The LIKE operator is used in SQL to perform a pattern matching of a string value against a search pattern.
         sql_query = "SELECT * FROM contacts WHERE name LIKE? OR phone LIKE ?"
-
         # SELECT * FROM contacts WHERE name LIKE '%7260%'  OR phone LIKE '%7260%'
-
         search_term = f"%{search_term}%"
-
         # Execute the query with the search term
         cursor.execute(sql_query, (search_term, search_term))
-
         contacts = cursor.fetchall()
         # if user input is incomplete string or incomplete num, show all possible matches
         # match to phonenum and name both column
-
         # Display the matching contacts 
         if len(contacts) > 0:
             for row in contacts:
@@ -146,36 +127,23 @@ def search_contact_by_details():
             print("No contacts found.")
     except sqlite3.Error as e:
         print("Error executing query:", e)
-
         cursor.close()
         con.close()
-
 
 def delete_contact():
     try:
         delete_term = input("enter name of contact you want to delete: ").strip()
-
         con = sqlite3.connect('database.db')
-
         cursor = con.cursor()
-
         sql_query = "DELETE FROM contacts WHERE name = ?"
-
         cursor.execute(sql_query, (delete_term,))
-
         contacts = cursor.fetchall()
-
         con.commit()
     except sqlite3.Error as e:
         print("Error executing query:", e)
-
         cursor.close()
-
         con.close()
-
         print('contact delete successfully')
-
-
 
 def update_contact():
     try:
@@ -200,23 +168,16 @@ def update_contact():
         else:
             return
 
-
         con = sqlite3.connect("database.db")
-
         cursor = con.cursor()
-
         cursor.execute('UPDATE contacts SET phone=?, EmailId=? WHERE name=?', (new_phone, new_email, name))
         contacts = cursor.fetchall()
         con.commit()
+
     except sqlite3.Error as e:
-        print("Error executing query:", e)
-        
+        print("Error executing query:", e)      
         con.close()
-
         print(f'{name} contact details successfully updated.')
-
-
-
 
 if __name__ == '__main__':
     Create_table_If_not_exist()
