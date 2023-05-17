@@ -18,14 +18,14 @@ Library_management
 
 2) register member
     - ask user to enter member(name, address, contacts_Information)
-    - store user details to members table using INSERT query.
+    - store user details to members table using INSERT query./         
     - display massage(member successfully registered.)
 
 3) borrow book
    
     - ask user for MemberID and BookId
     - check provided memberID and BookId is existed in Recods table or not using Select query.
-    - then insert provided details(memberID and BookTd, status = 'borrowed') into Records table using Insert query.
+    - then insert provided details(memberID and BookId, status = 'borrowed') into Records table using Insert query.
     - 
 4) return book
     - ask user for memberID and bookId
@@ -41,6 +41,11 @@ Library_management
 import re
 import click
 import sqlite3
+from validationHelper import check_name_validation
+from validationHelper import check_validation_of_memberID
+from validationHelper import check_year_validation
+from validationHelper import check_ISBN_validation
+from validationHelper import check_phone_validation
 
 @click.command()
 def library_management():
@@ -69,14 +74,13 @@ def library_management():
                 generating_reports() 
 
            
-
-
 def check_validation_for_option_as_input(option_as_input):
     if option_as_input >= 1 and option_as_input <= 4:
         return True
         
     else:
         return False
+
 
 
 def Create_table_If_not_exist():
@@ -92,51 +96,24 @@ def Create_table_If_not_exist():
     else:
         res = cursor.execute("CREATE TABLE Books(Book_title, Publication_year,ISBN_number)")
         res = cursor.execute("CREATE TABLE Members(member_name,member_address,member_contact)")
-        res = cursor.execute("CREATE TABLE Records(memberID,Book_ID)")
-    
+        res = cursor.execute("CREATE TABLE Records(memberID, book_ID)")
+
     cursor.close()
     con.close()
 
 
-def check_name_validation(Book_title,member_name, member_address):
-    pattern = r'^[a-zA-Z ]+$'
-    if re.match(pattern, Book_title, member_name, member_address):
-        return True
-    else:
-        return False
-
-def check_year_validation(Publication_year):
-    if Publication_year < 0  or Publication_year > 9999:
-        return False    
-    else:
-        return True        
-
-def check_ISBN_validation(ISBN_number):
-    if ISBN_number ==  (r"^(?:ISBN(?:-13)?:?\s?)?(?=[0-9]{13}$|(?=(?:[0-9]+[-\s]){4})[-\s0-9]{17}$)[0-9]{1,5}[-\s]?[0-9]+[-\s]?[0-9]+[-\s]?[0-9]+[-\s]?[0-9]+$"):
-        return False
-    else:
-        return True
-    
-def check_phone_validation(member_contact):
-    if member_contact >= 1 and member_contact <= 10:
-        return True     
-    else:
-        return False
-
-
-
 def adding_books():
-        Book_title = input("Book_Title").strip()
+        Book_title = input("Book_Title: ").strip()
         if not check_name_validation(Book_title):
             print('Invalid name format') 
             return
               
-        Publication_year = int(input("Publication_year").strip())
+        Publication_year = int(input("Publication_year: ").strip())
         while not check_year_validation(Publication_year):
             print('the integer must be in range 1-10')
             return
         
-        ISBN_number = input("ISBN_number").strip()
+        ISBN_number = input("ISBN_number: ").strip()
         if not check_ISBN_validation(ISBN_number):
             print('invalid ISBN number')
             return
@@ -148,7 +125,8 @@ def adding_books():
         cursor.close()
         con.close()
         click.echo(f'Book successfully added')
-    
+    # when user enters their name then display his BookID
+        # use sql query using ID to generate Id using auto increment.
 
 def registering_members():
     member_name = (input('member name'))
@@ -161,10 +139,14 @@ def registering_members():
         print('Invalid name format') 
         return
 
-    member_contact = input('member_contact')
+    member_contact = int(input('member_contact'))
     if not check_phone_validation(member_contact):
             print('the integer must be in range 1-10')
             return
+
+    # when user enters their name then display his memberID
+        # use sql query using ID to generate Id using auto increment.
+
 
     con = sqlite3.connect("database.db")
     cursor = con.cursor()
@@ -172,12 +154,32 @@ def registering_members():
     con.commit()
     cursor.close()
     con.close()
-    click.echo(f'Book successfully added')
+    click.echo(f'Member successfully added')
     
 
 
 def borrowing_books():
-    pass
+    memberID = input('memberID: ')
+    if not check_validation_of_memberID(memberID):
+        print('Invalid memberID')
+        return
+
+    book_ID = input('bookId: ')  
+    if not check_ISBN_validation(book_ID):
+        print('Invalid bookID')
+        return
+
+
+    con = sqlite3.connect("database.db")
+    cursor = con.cursor()
+    # res = cursor.execute("ALTER TABLE Records ADD COLUMN new_column memberID")
+
+    res = cursor.execute('INSERT INTO Records(memberID, book_ID) VALUES (?, ?)', (memberID, book_ID))
+    con.commit()
+    cursor.close()
+    con.close()
+    click.echo(f'Book successfully added')
+    
 
 def returning_books():
     pass
