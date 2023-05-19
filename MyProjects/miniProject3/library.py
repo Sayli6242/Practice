@@ -47,6 +47,7 @@ from validationHelper import check_year_validation
 from validationHelper import check_ISBN_validation
 from validationHelper import check_phone_validation
 
+
 @click.command()
 def library_management():
 
@@ -73,7 +74,7 @@ def library_management():
             if option_as_input == 5:
                 generating_reports() 
 
-           
+          
 def check_validation_for_option_as_input(option_as_input):
     if option_as_input >= 1 and option_as_input <= 4:
         return True
@@ -89,6 +90,11 @@ def Create_table_If_not_exist():
     cursor = con.cursor()
     res = cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='Books'")
     result = cursor.fetchone()
+
+    # cursor.execute("CREATE TABLE IF NOT EXISTS Members (id INTEGER PRIMARY KEY AUTOINCREMENT, member_name TEXT, member_address TEXT, member_contact INTEGER)")
+    # cursor.execute("CREATE TABLE IF NOT EXISTS Books (id INTEGER PRIMARY KEY AUTOINCREMENT, Book_title TEXT, Publication_year INTEGER, ISBN_number INTEGER)")
+    # cursor.execute("CREATE TABLE IF NOT EXISTS Records (memberID INTEGER, book_ID INTEGER, status TEXT DEFAULT 'borrowed', FOREIGN KEY(memberID) REFERENCES Members(id), FOREIGN KEY(book_ID) REFERENCES Books(id))")
+    
         # Check if the table exists
     if result:
         
@@ -97,7 +103,6 @@ def Create_table_If_not_exist():
         res = cursor.execute("CREATE TABLE Books(Book_title, Publication_year,ISBN_number)")
         res = cursor.execute("CREATE TABLE Members(member_name,member_address,member_contact)")
         res = cursor.execute("CREATE TABLE Records(memberID, book_ID)")
-
     cursor.close()
     con.close()
 
@@ -122,24 +127,28 @@ def adding_books():
         cursor = con.cursor()
         res = cursor.execute('INSERT INTO Books(Book_title, Publication_year,ISBN_number) VALUES (?, ?, ?)', (Book_title, Publication_year,ISBN_number))
         con.commit()
+        Book_id = cursor.lastrowid
         cursor.close()
         con.close()
+        click.echo(f'Member successfully added with ID: {Book_id}')
         click.echo(f'Book successfully added')
     # when user enters their name then display his BookID
         # use sql query using ID to generate Id using auto increment.
 
+
+
 def registering_members():
-    member_name = (input('member name'))
+    member_name = (input('member name')).strip()
     if not check_name_validation(member_name):
         print('Invalid name format') 
         return
 
-    member_address = input('member_address')
+    member_address = input('member_address').strip()
     if not check_name_validation(member_address):
         print('Invalid name format') 
         return
 
-    member_contact = int(input('member_contact'))
+    member_contact = int(input('member_contact').strip())
     if not check_phone_validation(member_contact):
             print('the integer must be in range 1-10')
             return
@@ -147,16 +156,15 @@ def registering_members():
     # when user enters their name then display his memberID
         # use sql query using ID to generate Id using auto increment.
 
-
     con = sqlite3.connect("database.db")
     cursor = con.cursor()
     res = cursor.execute('INSERT INTO Members(member_name, member_address, member_contact) VALUES (?, ?, ?)', (member_name, member_address, member_contact))
     con.commit()
+    member_id = cursor.lastrowid
     cursor.close()
     con.close()
-    click.echo(f'Member successfully added')
-    
-
+    click.echo(f'Member successfully added with ID: {member_id}')
+   
 
 def borrowing_books():
     memberID = input('memberID: ')
@@ -169,20 +177,37 @@ def borrowing_books():
         print('Invalid bookID')
         return
 
-
     con = sqlite3.connect("database.db")
     cursor = con.cursor()
-    # res = cursor.execute("ALTER TABLE Records ADD COLUMN new_column memberID")
+    
+    # Check if the provided memberID and bookID exist in the Records table
+    cursor.execute("SELECT * FROM Records WHERE memberID = ? AND book_ID = ?", (memberID, book_ID))
+    result = cursor.fetchone()
+    if result:
+        print("The book has already been borrowed by the member.")
+        cursor.close()
+        con.close()
+        return
 
+    # Insert the provided details into the Records table
     res = cursor.execute('INSERT INTO Records(memberID, book_ID) VALUES (?, ?)', (memberID, book_ID))
     con.commit()
     cursor.close()
     con.close()
-    click.echo(f'Book successfully added')
-    
+    print('Book successfully borrowed')
+
 
 def returning_books():
-    pass
+    memberID = input('memberID: ')
+    if not check_validation_of_memberID(memberID):
+        print('Invalid memberID')
+        return
+
+    book_ID = input('bookId: ')  
+    if not check_ISBN_validation(book_ID):
+        print('Invalid bookID')
+        return
+
 
 def generating_reports():
     pass
@@ -191,4 +216,3 @@ def generating_reports():
 if __name__ == '__main__':
     Create_table_If_not_exist()
     library_management()
-   
