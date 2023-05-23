@@ -46,6 +46,7 @@ from validationHelper import check_year_validation
 from validationHelper import check_ISBN_validation
 from validationHelper import check_phone_validation
 from sqliteHelper import execute_query
+from sqliteHelper import create_table_if_not_exist
 
 @click.command()
 def library_management():
@@ -83,31 +84,17 @@ def check_validation_for_option_as_input(option_as_input):
     else:
         return False
 
-def Create_table_If_not_exist():
-    query = "SELECT name FROM sqlite_master WHERE type='table' AND name='Books'"
-    result, cursor = execute_query(query)
+def execute_table_queries():
 
-    if result:
-        # Check if the status column exists in the Records table
-        query = "PRAGMA table_info(Records)"
-        cursor = execute_query(query)
-        columns = cursor.fetchall()  
-        column_names = [column[1] for column in columns]  # Extract column names from the fetched results
-        if 'status' not in column_names:
-            # Add the status column to the existing Records table
-            query = "ALTER TABLE Records ADD COLUMN status TEXT DEFAULT 'borrowed'"
-            execute_query(query)
-    else:
-        # Create the Books and Members tables if they don't exist
-        query = "CREATE TABLE IF NOT EXISTS Books (bookId INTEGER PRIMARY KEY AUTOINCREMENT, Book_title TEXT, Publication_year INTEGER, ISBN_number TEXT)"
-        execute_query(query)
+        create_books_table_query = "CREATE TABLE IF NOT EXISTS Books (bookId INTEGER PRIMARY KEY AUTOINCREMENT, Book_title TEXT, Publication_year INTEGER, ISBN_number TEXT)"
+        create_table_if_not_exist("Books", create_books_table_query)
 
-        query = "CREATE TABLE IF NOT EXISTS Members (memberId INTEGER PRIMARY KEY AUTOINCREMENT, member_name TEXT, member_address TEXT, member_contact INTEGER)"
-        execute_query(query)
+        create_members_table_query = "CREATE TABLE IF NOT EXISTS Members (memberId INTEGER PRIMARY KEY AUTOINCREMENT, member_name TEXT, member_address TEXT, member_contact INTEGER)"
+        create_table_if_not_exist("Members", create_members_table_query)
 
-        query = "CREATE TABLE IF NOT EXISTS Records(memberID, book_ID, status TEXT DEFAULT 'borrowed')"
-        execute_query(query)
-    cursor.close()
+        create_records_table_query = "CREATE TABLE IF NOT EXISTS Records(memberID, book_ID, status TEXT DEFAULT 'borrowed')"
+        create_table_if_not_exist("Records", create_records_table_query)
+
     
 
 def adding_books():
@@ -129,8 +116,8 @@ def adding_books():
 
         query = "INSERT INTO Books(Book_title, Publication_year, ISBN_number) VALUES (?, ?, ?)"
         parameters = (Book_title, Publication_year, ISBN_number)
-        result = execute_query(query, parameters)
-        Book_id = cursor.lastrowid
+        result, Book_id = execute_query(query, parameters)
+        # Book_id = cursor.lastrowid
         click.echo(f'Book successfully added with ID: {Book_id}')
     # when user enters their name then display his BookID
       # use sql query using ID to generate Id using auto increment.
@@ -157,7 +144,7 @@ def registering_members():
 
     query = "INSERT INTO Members(member_name, member_address, member_contact) VALUES (?, ?, ?)"
     parameters = (member_name, member_address, member_contact)
-    execute_query(query, parameters)
+    result, member_id = execute_query(query, parameters)
     
     click.echo(f'Member successfully added with ID: {member_id}')
    
@@ -221,8 +208,8 @@ def returning_books():
 
 def generating_reports(): 
     query = "SELECT bookId, memberId FROM Records WHERE status = ?"
-    parameters = ("borrowed",)
-    result = execute_query(query, parameters)
+    params = ("borrowed",)
+    result = execute_query(query, params)
     return result
 
     for record in result:
@@ -232,5 +219,5 @@ def generating_reports():
         print("Member ID:", member_id)
 
 if __name__ == '__main__':
-    Create_table_If_not_exist()
+    execute_table_queries()
     library_management()
