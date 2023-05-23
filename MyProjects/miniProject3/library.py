@@ -45,7 +45,7 @@ from validationHelper import check_validation_of_memberID
 from validationHelper import check_year_validation
 from validationHelper import check_ISBN_validation
 from validationHelper import check_phone_validation
-
+from sqliteHelper import execute_query
 
 @click.command()
 def library_management():
@@ -83,34 +83,32 @@ def check_validation_for_option_as_input(option_as_input):
     else:
         return False
 
-
-
 def Create_table_If_not_exist():
-    
-    con = sqlite3.connect("database.db")
-    cursor = con.cursor()
-    res = cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='Books'")
-    result = cursor.fetchone()
-
+    query = "SELECT name FROM sqlite_master WHERE type='table' AND name='Books'"
+    result, cursor = execute_query(query)
 
     if result:
         # Check if the status column exists in the Records table
-        cursor.execute("PRAGMA table_info(Records)")
-        columns = cursor.fetchall()
-        column_names = [column[1] for column in columns]
+        query = "PRAGMA table_info(Records)"
+        cursor = execute_query(query)
+        columns = cursor.fetchall()  
+        column_names = [column[1] for column in columns]  # Extract column names from the fetched results
         if 'status' not in column_names:
             # Add the status column to the existing Records table
-            cursor.execute("ALTER TABLE Records ADD COLUMN status TEXT DEFAULT 'borrowed'")
+            query = "ALTER TABLE Records ADD COLUMN status TEXT DEFAULT 'borrowed'"
+            execute_query(query)
     else:
-        # Create the Books and Members tables if don't exist
-        cursor.execute("CREATE TABLE IF NOT EXISTS Books(Book_title, Publication_year, ISBN_number)")
-        cursor.execute("CREATE TABLE IF NOT EXISTS Members(member_name, member_address, member_contact)")
-        cursor.execute("CREATE TABLE IF NOT EXISTS Records(memberID, book_ID, status TEXT DEFAULT 'borrowed')")
+        # Create the Books and Members tables if they don't exist
+        query = "CREATE TABLE IF NOT EXISTS Books (bookId INTEGER PRIMARY KEY AUTOINCREMENT, Book_title TEXT, Publication_year INTEGER, ISBN_number TEXT)"
+        execute_query(query)
 
+        query = "CREATE TABLE IF NOT EXISTS Members (memberId INTEGER PRIMARY KEY AUTOINCREMENT, member_name TEXT, member_address TEXT, member_contact INTEGER)"
+        execute_query(query)
+
+        query = "CREATE TABLE IF NOT EXISTS Records(memberID, book_ID, status TEXT DEFAULT 'borrowed')"
+        execute_query(query)
     cursor.close()
-    con.close()
-
-
+    
 
 def adding_books():
         Book_title = input("Book_Title: ").strip()
@@ -121,23 +119,21 @@ def adding_books():
         Publication_year = int(input("Publication_year: ").strip())
         while not check_year_validation(Publication_year):
             print('the integer must be in range 1-10')
-            return
+            return    
         
         ISBN_number = input("ISBN_number: ").strip()
         if not check_ISBN_validation(ISBN_number):
             print('invalid ISBN number')
             return
 
-        con = sqlite3.connect("database.db")
-        cursor = con.cursor()
-        res = cursor.execute('INSERT INTO Books(Book_title, Publication_year,ISBN_number) VALUES (?, ?, ?)', (Book_title, Publication_year,ISBN_number))
-        con.commit()
+
+        query = "INSERT INTO Books(Book_title, Publication_year, ISBN_number) VALUES (?, ?, ?)"
+        parameters = (Book_title, Publication_year, ISBN_number)
+        result = execute_query(query, parameters)
         Book_id = cursor.lastrowid
-        cursor.close()
-        con.close()
         click.echo(f'Book successfully added with ID: {Book_id}')
     # when user enters their name then display his BookID
-        # use sql query using ID to generate Id using auto increment.
+      # use sql query using ID to generate Id using auto increment.
 
 
 def registering_members():
@@ -158,14 +154,11 @@ def registering_members():
 
     # when user enters their name then display his memberID
         # use sql query using ID to generate Id using auto increment.
-  
-    con = sqlite3.connect("database.db")
-    cursor = con.cursor()
-    res = cursor.execute('INSERT INTO Members(member_name, member_address, member_contact) VALUES (?, ?, ?)', (member_name, member_address, member_contact))
-    con.commit()
-    member_id = cursor.lastrowid
-    cursor.close()
-    con.close()
+
+    query = "INSERT INTO Members(member_name, member_address, member_contact) VALUES (?, ?, ?)"
+    parameters = (member_name, member_address, member_contact)
+    execute_query(query, parameters)
+    
     click.echo(f'Member successfully added with ID: {member_id}')
    
 
@@ -180,23 +173,20 @@ def borrowing_books():
         print('Invalid bookID')
         return
 
-    con = sqlite3.connect("database.db")
-    cursor = con.cursor()
-    
-    # Check if the provided memberID and bookID exist in the Records table
-    cursor.execute("SELECT * FROM Records WHERE memberID = ? AND book_ID = ?", (memberID, book_ID))
-    result = cursor.fetchone()
+    query = "SELECT * FROM Records WHERE memberID = ? AND book_ID = ?"
+    parameters = (memberID, book_ID)
+    result = execute_query(query, parameters)
+
     if result:
         print("The book has already been borrowed by the member.")
         cursor.close()
         con.close()
         return
+    
+    query = "INSERT INTO Records(memberID, book_ID, status) VALUES (?, ?, ?)"
+    parameters = (memberID, book_ID, 'borrowed')
+    execute_query(query, parameters)
 
-      # Insert the provided details into the Records table with status = 'borrowed'
-    cursor.execute('INSERT INTO Records(memberID, book_ID, status) VALUES (?, ?, ?)', (memberID, book_ID, 'borrowed'))
-    con.commit()
-    cursor.close()
-    con.close()
     print('Book successfully borrowed')
 
 def returning_books():
@@ -210,12 +200,11 @@ def returning_books():
         print('Invalid bookID')
         return
 
-    con = sqlite3.connect("database.db")
-    cursor = con.cursor()
-
     # Check if the user has borrowed the book (status = 'borrowed')
-    cursor.execute("SELECT * FROM Records WHERE memberID = ? AND book_ID = ? AND status = 'borrowed'", (memberID, book_ID))
-    result = cursor.fetchone()
+    query = "SELECT * FROM Records WHERE memberID = ? AND book_ID = ? AND status = 'borrowed'"
+    parameters = (memberID, book_ID)
+    result = execute_query(query, parameters)
+
     if not result:
         print("The member has not borrowed the book.")
         cursor.close()
@@ -223,23 +212,24 @@ def returning_books():
         return
 
     # Update the status to 'return'
-    cursor.execute("UPDATE Records SET status = 'return' WHERE memberID = ? AND book_ID = ?", (memberID, book_ID))
-    con.commit()
-    cursor.close()
-    con.close()
+    query = "UPDATE Records SET status = 'return' WHERE memberID = ? AND book_ID = ?"
+    parameters = (memberID, book_ID)
+    result = execute_query(query,parameters)
+    
     print('Book successfully returned')
 
 
 def generating_reports(): 
-    con = sqlite3.connect("database.db")
-    cursor = con.cursor()
-    cursor.execute("SELECT Records.book_ID, Books.Book_title, Records.memberID, Members.member_name FROM Records INNER JOIN Books ON Records.book_ID = Books.rowid INNER JOIN Members ON Records.memberID = Members.rowid WHERE Records.status = 'borrowed'")
-    results = cursor.fetchall()
-    con.commit()
-    cursor.close()
-    con.close()
+    query = "SELECT bookId, memberId FROM Records WHERE status = ?"
+    parameters = ("borrowed",)
+    result = execute_query(query, parameters)
+    return result
 
-
+    for record in result:
+        book_id = record[0]
+        member_id = record[1]
+        print("Book ID:", book_id)
+        print("Member ID:", member_id)
 
 if __name__ == '__main__':
     Create_table_If_not_exist()
