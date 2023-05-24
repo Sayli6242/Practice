@@ -62,20 +62,18 @@ def library_management():
             if option_as_input == 1: 
                 adding_books()
 
-            if option_as_input == 2:
+            elif option_as_input == 2:
                 registering_members()
 
-            if option_as_input == 3:
+            elif option_as_input == 3:
                 borrowing_books()
 
-            if option_as_input == 4:
+            elif option_as_input == 4:
                 returning_books()
 
-            if option_as_input == 5:
+            elif option_as_input == 5:
                 generating_reports() 
             
-            else:
-                print('invalid opration')
           
 def check_validation_for_option_as_input(option_as_input):
     if option_as_input >= 1 and option_as_input <= 5:
@@ -92,7 +90,7 @@ def execute_table_queries():
         create_members_table_query = "CREATE TABLE IF NOT EXISTS Members (memberId INTEGER PRIMARY KEY AUTOINCREMENT, member_name TEXT, member_address TEXT, member_contact INTEGER)"
         create_table_if_not_exist("Members", create_members_table_query)
 
-        create_records_table_query = "CREATE TABLE IF NOT EXISTS Records(memberID, book_ID, status TEXT DEFAULT 'borrowed')"
+        create_records_table_query = "CREATE TABLE IF NOT EXISTS Records(RecordID INTEGER PRIMARY KEY AUTOINCREMENT,memberId INTEGER, book_ID INTEGER, status TEXT DEFAULT 'borrowed')"
         create_table_if_not_exist("Records", create_records_table_query)
 
     
@@ -113,15 +111,14 @@ def adding_books():
             print('invalid ISBN number')
             return
 
-
         query = "INSERT INTO Books(Book_title, Publication_year, ISBN_number) VALUES (?, ?, ?)"
         parameters = (Book_title, Publication_year, ISBN_number)
-        result, Book_id = execute_query(query, parameters)
+        result, book_id = execute_query(query, parameters)
         # Book_id = cursor.lastrowid
-        click.echo(f'Book successfully added with ID: {Book_id}')
+        click.echo(f'Book successfully added with ID: {book_id}')
     # when user enters their name then display his BookID
       # use sql query using ID to generate Id using auto increment.
-
+        
 
 def registering_members():
     member_name = (input('member name')).strip()
@@ -145,7 +142,6 @@ def registering_members():
     query = "INSERT INTO Members(member_name, member_address, member_contact) VALUES (?, ?, ?)"
     parameters = (member_name, member_address, member_contact)
     result, member_id = execute_query(query, parameters)
-    
     click.echo(f'Member successfully added with ID: {member_id}')
    
 
@@ -163,18 +159,17 @@ def borrowing_books():
     query = "SELECT * FROM Records WHERE memberID = ? AND book_ID = ?"
     parameters = (memberID, book_ID)
     result = execute_query(query, parameters)
-
+    
     if result:
-        print("The book has already been borrowed by the member.")
-        cursor.close()
-        con.close()
+        print(" book already borrowed")
+        
         return
     
     query = "INSERT INTO Records(memberID, book_ID, status) VALUES (?, ?, ?)"
     parameters = (memberID, book_ID, 'borrowed')
-    execute_query(query, parameters)
+    result , RecordId = execute_query(query, parameters)
 
-    print('Book successfully borrowed')
+    print(f'Book successfully borrowed:{RecordId}')
 
 def returning_books():
     memberID = input('memberID: ')
@@ -207,17 +202,18 @@ def returning_books():
 
 
 def generating_reports(): 
-    query = "SELECT bookId, memberId FROM Records WHERE status = ?"
-    params = ("borrowed",)
-    result = execute_query(query, params)
-    return result
+    query = "SELECT book_Id, memberId FROM Records WHERE status = ?"
+    parameters = ("borrowed",)
+    result = execute_query(query, parameters)
+    
 
     for record in result:
-        book_id = record[0]
-        member_id = record[1]
-        print("Book ID:", book_id)
-        print("Member ID:", member_id)
+        book_Id = record[0]
+        member_Id = record[1]
+        print("Book ID:", book_Id)
+        print("Member ID:", member_Id)
 
 if __name__ == '__main__':
     execute_table_queries()
     library_management()
+    
