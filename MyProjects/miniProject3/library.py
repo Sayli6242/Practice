@@ -47,7 +47,7 @@ from validationHelper import check_ISBN_validation
 from validationHelper import check_phone_validation
 from sqliteHelper import execute_query
 from sqliteHelper import create_table_if_not_exist
-
+from sqliteHelper import fetch_one
 @click.command()
 def library_management():
 
@@ -84,10 +84,10 @@ def check_validation_for_option_as_input(option_as_input):
 
 def execute_table_queries():
 
-        create_books_table_query = "CREATE TABLE IF NOT EXISTS Books (bookId INTEGER PRIMARY KEY AUTOINCREMENT, Book_title TEXT, Publication_year INTEGER, ISBN_number TEXT)"
+        create_books_table_query = "CREATE TABLE IF NOT EXISTS Books (book_ID INTEGER PRIMARY KEY AUTOINCREMENT, Book_title TEXT, Publication_year INTEGER, ISBN_number TEXT)"
         create_table_if_not_exist("Books", create_books_table_query)
 
-        create_members_table_query = "CREATE TABLE IF NOT EXISTS Members (memberId INTEGER PRIMARY KEY AUTOINCREMENT, member_name TEXT, member_address TEXT, member_contact INTEGER)"
+        create_members_table_query = "CREATE TABLE IF NOT EXISTS Members (memberID INTEGER PRIMARY KEY AUTOINCREMENT, member_name TEXT, member_address TEXT, member_contact INTEGER)"
         create_table_if_not_exist("Members", create_members_table_query)
 
         create_records_table_query = "CREATE TABLE IF NOT EXISTS Records(RecordID INTEGER PRIMARY KEY AUTOINCREMENT,memberId INTEGER, book_ID INTEGER, status TEXT DEFAULT 'borrowed')"
@@ -113,9 +113,9 @@ def adding_books():
 
         query = "INSERT INTO Books(Book_title, Publication_year, ISBN_number) VALUES (?, ?, ?)"
         parameters = (Book_title, Publication_year, ISBN_number)
-        result, book_id = execute_query(query, parameters)
+        result, book_ID = execute_query(query, parameters)
         # Book_id = cursor.lastrowid
-        click.echo(f'Book successfully added with ID: {book_id}')
+        click.echo(f'Book successfully added with ID: {book_ID}')
     # when user enters their name then display his BookID
       # use sql query using ID to generate Id using auto increment.
         
@@ -141,8 +141,8 @@ def registering_members():
 
     query = "INSERT INTO Members(member_name, member_address, member_contact) VALUES (?, ?, ?)"
     parameters = (member_name, member_address, member_contact)
-    result, member_id = execute_query(query, parameters)
-    click.echo(f'Member successfully added with ID: {member_id}')
+    result, memberID = execute_query(query, parameters)
+    click.echo(f'Member successfully added with ID: {memberID}')
    
 
 def borrowing_books():
@@ -156,14 +156,14 @@ def borrowing_books():
         print('Invalid bookID')
         return
 
-    query = "SELECT * FROM Records WHERE memberID = ? AND book_ID = ?"
-    parameters = (memberID, book_ID)
-    result = execute_query(query, parameters)
+    # query = "SELECT * FROM Records WHERE memberID = ? AND book_ID = ?"
+    # parameters = (memberID, book_ID)
+    # result = execute_query(query, parameters)
     
-    if result:
-        print(" book already borrowed")
+    # if result:
+    #     print(" book already borrowed")
         
-        return
+    #     return
     
     query = "INSERT INTO Records(memberID, book_ID, status) VALUES (?, ?, ?)"
     parameters = (memberID, book_ID, 'borrowed')
@@ -202,17 +202,61 @@ def returning_books():
 
 
 def generating_reports(): 
-    query = "SELECT book_Id, memberId FROM Records WHERE status = ?"
-    parameters = ("borrowed",)
-    result = execute_query(query, parameters)
+    # query = "SELECT book_Id, memberId FROM Records WHERE status = ?"
+    # parameters = ("borrowed",)
+    # result = execute_query(query, parameters)
     
 
-    for record in result:
-        book_Id = record[0]
-        member_Id = record[1]
-        print("Book ID:", book_Id)
-        print("Member ID:", member_Id)
+    # for record in result:
+    #     book_Id = record[0]
+    #     member_Id = record[1]
+    #     print("Book ID:", book_Id)
+    #     print("Member ID:", member_Id)
+    # Step 1: Display borrowed books and their member names
+    query = '''
+    SELECT Books.book_title, Members.member_name
+    FROM Records
+    INNER JOIN Books ON Records.book_ID = Books.book_ID
+    INNER JOIN Members ON Records.memberID = Members.memberID
+    '''
+    borrowed_books = execute_query(query)
 
+    print("Borrowed Books and Member Names:")
+    
+    for book, member in borrowed_books:
+        print(f"Book Title: {book} | Member Name: {member}")
+
+    # Step 2: Find unique bookId and memberId
+    query = "SELECT DISTINCT book_ID, memberID FROM Records"
+    unique_ids = execute_query(query)
+
+     # Step 3: Find book_title from books table and member_name from members table
+    book_titles = []
+    member_names = []
+
+    for book_ID, memberID in unique_ids:
+    # Query books table for book_title
+        query = "SELECT book_title FROM Books WHERE book_ID = ?"
+        parameters = book_ID
+        book = fetch_one(query,parameters)
+        book_titles.append(book[0])
+
+
+     # Query members table for member_name
+        query = "SELECT member_name FROM Members WHERE memberID = ?"
+        parameters = memberID
+        member = fetch_one(query,memberID)
+        member_names.append(member[0])
+
+    # Step 4: Print all member names and all book titles
+    print("\nAll Member Names:")
+    for member in member_names:
+        print(member)
+
+    print("\nAll Book Titles:")
+    for book in book_titles:
+        print(book)
+    
 if __name__ == '__main__':
     execute_table_queries()
     library_management()

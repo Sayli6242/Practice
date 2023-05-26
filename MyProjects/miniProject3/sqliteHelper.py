@@ -13,6 +13,14 @@ def execute_query(query, parameters=None):
     con.close()
     return result, cursor.lastrowid
 
+
+def fetch_one(query, parameters=None):
+    result, _ = execute_query(query, parameters)
+    if result:
+        return result[0]
+    return None
+
+
 def create_table_if_not_exist(table_name, create_query):
     with sqlite3.connect("database.db") as con:
         cursor = con.cursor()
