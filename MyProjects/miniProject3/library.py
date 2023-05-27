@@ -36,6 +36,12 @@ Library_management
     - find unique bookId and their memberId.
     - and find book_title from books table and find member_name from members table.
     - then print all members name and all books name.
+
+    {
+        "book1":[user1,user2]
+        "book2":[user1,user2]
+    }
+    
 """
 import re
 import click
@@ -202,60 +208,22 @@ def returning_books():
 
 
 def generating_reports(): 
-    # query = "SELECT book_Id, memberId FROM Records WHERE status = ?"
-    # parameters = ("borrowed",)
-    # result = execute_query(query, parameters)
-    
-
-    # for record in result:
-    #     book_Id = record[0]
-    #     member_Id = record[1]
-    #     print("Book ID:", book_Id)
-    #     print("Member ID:", member_Id)
-    # Step 1: Display borrowed books and their member names
+   
     query = '''
-    SELECT Books.book_title, Members.member_name
+    SELECT   Books.Book_title, Members.member_name
     FROM Records
     INNER JOIN Books ON Records.book_ID = Books.book_ID
     INNER JOIN Members ON Records.memberID = Members.memberID
+    WHERE Records.status = 'borrowed'
     '''
     borrowed_books = execute_query(query)
 
+    dict = { }
+
+
+
     print("Borrowed Books and Member Names:")
     
-    for book, member in borrowed_books:
-        print(f"Book Title: {book} | Member Name: {member}")
-
-    # Step 2: Find unique bookId and memberId
-    query = "SELECT DISTINCT book_ID, memberID FROM Records"
-    unique_ids = execute_query(query)
-
-     # Step 3: Find book_title from books table and member_name from members table
-    book_titles = []
-    member_names = []
-
-    for book_ID, memberID in unique_ids:
-    # Query books table for book_title
-        query = "SELECT book_title FROM Books WHERE book_ID = ?"
-        parameters = book_ID
-        book = fetch_one(query,parameters)
-        book_titles.append(book[0])
-
-
-     # Query members table for member_name
-        query = "SELECT member_name FROM Members WHERE memberID = ?"
-        parameters = memberID
-        member = fetch_one(query,memberID)
-        member_names.append(member[0])
-
-    # Step 4: Print all member names and all book titles
-    print("\nAll Member Names:")
-    for member in member_names:
-        print(member)
-
-    print("\nAll Book Titles:")
-    for book in book_titles:
-        print(book)
     
 if __name__ == '__main__':
     execute_table_queries()
