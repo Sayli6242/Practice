@@ -218,11 +218,17 @@ def generating_reports():
     '''
     borrowed_books = execute_query(query)
 
+    print(borrowed_books)
+    # create dict out of obtained tuple
     dict = { }
 
+    for item in borrowed_books:
+        key,value = item
+        dict[key] = value
+    
+    print(dict)
 
 
-    print("Borrowed Books and Member Names:")
     
     
 if __name__ == '__main__':
