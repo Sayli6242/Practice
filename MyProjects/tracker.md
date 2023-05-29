@@ -1,6 +1,7 @@
 
-mermaid
-```classDiagram
+
+```mermaid
+classDiagram
     class Expense {
         +int id
         +string description
