@@ -220,16 +220,20 @@ def generating_reports():
 
     print(borrowed_books)
     # create dict out of obtained tuple
-    dict = { }
+    list_of_tuples, _ = borrowed_books
 
-    for item in borrowed_books:
-        key,value = item
-        dict[key] = value
-    
-    print(dict)
+# Create an empty dictionary
+    my_dict = {}
 
+# Iterate over the tuples in the list
+    for item in list_of_tuples:
+        key, value = item
+        if key not in my_dict:
+            my_dict[key] = []
+        my_dict[key].append(value)
 
-    
+# Print the resulting dictionary
+    print(my_dict)
     
 if __name__ == '__main__':
     execute_table_queries()
