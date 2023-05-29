@@ -1,4 +1,6 @@
-classDiagram
+
+mermaid
+```classDiagram
     class Expense {
         +int id
         +string description
@@ -41,3 +43,4 @@ classDiagram
     Database "1" --> "*" Expense
     Database "1" --> "*" Category
     Database "1" --> "*" User
+```
