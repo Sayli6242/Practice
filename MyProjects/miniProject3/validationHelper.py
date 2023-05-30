@@ -7,6 +7,13 @@ def validate_input(input_value, pattern):
     else:
         return False
 
+        
+def check_validation_for_option_as_input(option_as_input):
+    if option_as_input >= 1 and option_as_input <= 5:
+        return True
+        
+    else:
+        return False
 
 
 def check_name_validation(book_title):

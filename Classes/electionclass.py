@@ -25,7 +25,7 @@ class election:
     def calculate_votes():
         pass
 
-
+  
 e = election()
 
 # e = election()

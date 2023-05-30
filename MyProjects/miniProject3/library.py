@@ -51,6 +51,7 @@ from validationHelper import check_validation_of_memberID
 from validationHelper import check_year_validation
 from validationHelper import check_ISBN_validation
 from validationHelper import check_phone_validation
+from validationHelper import check_validation_for_option_as_input
 from sqliteHelper import execute_query
 from sqliteHelper import create_table_if_not_exist
 from sqliteHelper import fetch_one
@@ -80,13 +81,7 @@ def library_management():
             elif option_as_input == 5:
                 generating_reports() 
             
-          
-def check_validation_for_option_as_input(option_as_input):
-    if option_as_input >= 1 and option_as_input <= 5:
-        return True
-        
-    else:
-        return False
+     
 
 def execute_table_queries():
 
@@ -106,6 +101,7 @@ def adding_books():
         if not check_name_validation(Book_title):
             print('Invalid name format') 
             return
+        # extra step 
               
         Publication_year = int(input("Publication_year: ").strip())
         while not check_year_validation(Publication_year):
