@@ -43,3 +43,9 @@ def check_phone_validation(member_contact):
         return True
     else:
         return False
+
+def check_amount_validation(amount):
+    if amount < 0:
+        return True
+    else:
+        return False
