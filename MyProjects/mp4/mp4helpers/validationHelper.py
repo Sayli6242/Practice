@@ -8,8 +8,8 @@ def validate_input(input_value, pattern):
         return False
 
         
-def check_validation_for_option_as_input(option_as_input):
-    if option_as_input >= 1 and option_as_input <= 5:
+def check_number_in_range(number,lst_len):
+    if number >= 1 and number <= lst_len:
         return True
         
     else:
@@ -45,7 +45,7 @@ def check_phone_validation(member_contact):
         return False
 
 def check_amount_validation(amount):
-    if amount < 0:
+    if amount > 0:
         return True
     else:
         return False

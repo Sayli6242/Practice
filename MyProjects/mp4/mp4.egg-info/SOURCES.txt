@@ -1,0 +1,9 @@
+setup.py
+mp4.egg-info/PKG-INFO
+mp4.egg-info/SOURCES.txt
+mp4.egg-info/dependency_links.txt
+mp4.egg-info/requires.txt
+mp4.egg-info/top_level.txt
+mp4helpers/__init__.py
+mp4helpers/sqliteHelper.py
+mp4helpers/validationHelper.py
