@@ -21,9 +21,9 @@ def check_name_validation(book_title):
     return validate_input(book_title, pattern)
     
 # where r means raw string
-def check_validation_of_memberID(member_id):
+def check_validation_of_provide_ID(id):
     pattern = r'^[A-Za-z0-9]+$'
-    return validate_input(member_id, pattern)
+    return validate_input(id, pattern)
 
 def check_ISBN_validation(ISBN_number):
     pattern = r'^\d{10}$|^\d{13}$'

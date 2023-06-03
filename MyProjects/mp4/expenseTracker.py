@@ -42,19 +42,21 @@ from mp4helpers.sqliteHelper import execute_query
 from mp4helpers.validationHelper import  check_number_in_range
 from mp4helpers.validationHelper import check_name_validation
 from mp4helpers.validationHelper import check_amount_validation
-
+from mp4helpers.validationHelper import check_validation_of_provide_ID
 @click.command()
 def main():
-     lst = ['Add Expenses','Categories Expenses','Generate Report','Set Budget','Analyze Expenses']
-     lst_len = len(lst)
-     
+    lst = ['Add Expenses','Categories Expenses','Generate Report','Set Budget','Analyze Expenses']
+    
 
-     while True:
-        for i, lst in enumerate(lst, start=1):
-            click.echo(f"{i}) {lst}")
+    while True:
+    
+        
+        for i, item in enumerate(lst, ):
+            click.echo(f"{i+1}) {item}")
 
+        
         choice = int(input("Enter your choice: ").strip())
-        if not  check_number_in_range(choice,lst_len):
+        if not  check_number_in_range(choice,len(lst)):
             print('choice must be an number from given choices')
             return
 
@@ -101,32 +103,92 @@ class Expenses_Tracker:
             print("Invalid description")
             return
 
-        for i, category in enumerate(self.categories, start=1):
+        for i, category in enumerate(self.categories,start=1):
             click.echo(f"{i}) {category}")
 
         expense_category = int(input("Enter expense category: ").strip())
         if not check_number_in_range(expense_category, len(self.categories)):
             print("Invalid category")
+            return
+        z = self.categories[expense_category-1] 
+        print(z)
 
         query = "INSERT INTO expenses (amount, description, category) VALUES (?, ?, ?)"
-        parameters = (expense_amount, expense_category, expense_description)
+        parameters = (expense_amount, expense_description, z)
         result, expense_id = execute_query(query,parameters)
 
         click.echo(f'Expense added successfully with ID: {expense_id}')
-        
+        return
 
     def categories_expenses(self):
-        pass
+        
+        expense_id = input("enter expense_id: ").strip()
+        if not check_validation_of_provide_ID(expense_id):
+            print("Invalid expense_id")
+            return
 
+        for i, category in enumerate(self.categories, start=1):
+            click.echo(f"{i}) {category}")
+      
+
+        expense_category = int(input("Enter expense category: ").strip())
+        if not check_number_in_range(expense_category, len(self.categories)):
+            print("Invalid category")
+            return
+        z = self.categories[expense_category-1]
+        print(z)
+
+        query = "UPDATE expenses SET category = ? WHERE expense_id = ?"
+        parameters = (expense_id, z)
+        result = execute_query(query,parameters)
+        
+        click.echo("category successfully updated")
 
     def generate_report(self):
-        pass
+
+        query = "SELECT category, SUM(amount) FROM expenses GROUP BY category"
+        result = execute_query(query)
+        print(result)
+       
+        my_dict = { }
+
+        # for (self.categories), amount in result:
+            
+        #     if (self.categories) not in my_dict:
+        #         my_dict[self.categories] = [ ]
+        #         my_dict[self.categories].append(amount)
+        
+        # print(my_dict)
+
+        for category, amount in result:
+            if category not in my_dict:
+                my_dict[category] = []
+            my_dict[category].append(amount)
+
+        print(my_dict)
+            
 
 
     def set_budget(self):
-        pass
+        budget_amount  = int(input("enter budget amount: ").strip())
+        if not check_amount_validation(budget_amount):
+            print("Amount cannnot be negetive")
+            return
 
+        for i, category in enumerate(self.categories, start=1):
+            click.echo(f"{i}) {category}")
+      
+        budget_category =int(input("Enter category: ").strip())
+        if not check_number_in_range(budget_category,len(self.categories)):
+            print("Invalid category")
+        z = self.categories[budget_category-1]
+    
+        query = "INSERT INTO budget(amount,category) VALUES (?, ?)"
+        parameters = (budget_amount, z)
+        result, expense_id = execute_query(query,parameters)   
 
+        click.echo("budget set successfully")
+        
     def analyze_expenses(self):
         pass
 
@@ -134,6 +196,6 @@ class Expenses_Tracker:
 if __name__ == '__main__':
     execute_table_queries()
     e = Expenses_Tracker(['entertainment','food','elctricity',])
-
+   
     main()
 
