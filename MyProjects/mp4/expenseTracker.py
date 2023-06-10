@@ -217,3 +217,7 @@ if __name__ == '__main__':
     execute_table_queries()
     e = Expenses_Tracker(['entertainment','food','elctricity',])   
     main()
+
+
+
+
