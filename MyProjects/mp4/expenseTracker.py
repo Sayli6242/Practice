@@ -214,8 +214,9 @@ class Expenses_Tracker:
         click.echo(f"Average Expenses per category are \n {category} : {avg}")
 
 if __name__ == '__main__':
-    execute_table_queries()
+ 
     e = Expenses_Tracker(['entertainment','food','elctricity',])   
+    execute_table_queries()
     main()
 
 
