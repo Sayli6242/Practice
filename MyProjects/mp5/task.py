@@ -25,6 +25,9 @@ This program should provide various operations such as
 """
 import click
 from mp4helpers.validationHelper import check_number_in_range
+from mp4helpers.validationHelper import check_name_validation
+from mp4helpers.validationHelper import check_validation_of_provide_ID
+from mp4helpers.validationHelper import validate_due_date
 @click.command()
 def trigger_task_management():
     # 
@@ -67,17 +70,49 @@ class task_manager:
 
 
     def create_task(self):
-        pass
-    
+        task_title = input('Enter the title of the task: ')
+        if not check_name_validation(task_title):
+            print('enter valid title')
+            return
+
+        task_description = input('Enter the task description: ')
+        if not check_name_validation(task_description):
+            print('invalid input')
+            return
+
+        task_due_date = input('Enter the due date of the task (YYYY-MM-DD): ')
+        if not validate_due_date(task_due_date):
+            print('Invalid date format. Please enter the date in the format YYYY-MM-DD.')
+            return
 
 
     def update_task(self):
-        pass
+        task_id = input('Enter the ID of the task you want to update: ')
+        if not check_validation_of_provide_ID(task_id):
+            print("Invalid expense_id")
+            return
 
+        task_title = input('Enter the updated title of the task: ')
+        if not check_name_validation(task_title):
+            print('Enter a valid title')
+            return
 
+        task_description = input('Enter the updated task description: ')
+        if not check_name_validation(task_description):
+            print('Invalid input')
+            return
+
+        task_due_date = input('Enter the updated due date of the task (YYYY-MM-DD): ')
+        if not validate_due_date(task_due_date):
+            print('Invalid date format. Please enter the date in the format YYYY-MM-DD.')
+            return
+
+            
     def delete_task(self):
-        pass
-
+        task_id = input('Enter the ID of the task you want to update: ')
+        if not check_validation_of_provide_ID(task_id):
+            print("Invalid expense_id")
+            return
     
     def retrieve_task(self):
         pass

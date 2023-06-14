@@ -1,6 +1,8 @@
 
 import re
 
+from datetime import datetime
+
 def validate_input(input_value, pattern):
     if re.match(pattern, input_value):
         return True
@@ -48,4 +50,11 @@ def check_amount_validation(amount):
     if amount > 0:
         return True
     else:
+        return False
+
+def validate_due_date(date_string):
+    try:
+        due_date = datetime.strptime(date_string, '%Y-%m-%d')
+        return True
+    except ValueError:
         return False
