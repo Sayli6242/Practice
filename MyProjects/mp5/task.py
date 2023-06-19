@@ -28,13 +28,23 @@ from mp4helpers.validationHelper import check_number_in_range
 from mp4helpers.validationHelper import check_name_validation
 from mp4helpers.validationHelper import check_validation_of_provide_ID
 from mp4helpers.validationHelper import validate_due_date
+from database import sqlite_Repository  
+from database import postgreSQL_Repository
 @click.command()
 def trigger_task_management():
-    # 
+
+    click.echo("which database you want to use to store task:\n 1) Sqlite  \n 2) PostgreSQL")
+    database_choice = int(input("enter your choice: "))
+    if database_choice == 1:
+        db = sqlite_Repository8
+    elif database_choice == 2:
+        db = postgreSQL_Repository
+    else:
+        print("Invalid Choice")
+        return
+ 
     lst = ['Create Task','Update Task','Delete Task','Retrieve Task']
-
    
-
     while True:
         for i, item in enumerate(lst, ):
             click.echo(f"{i+1}) {item}")
@@ -67,7 +77,7 @@ class task_manager:
 
     def __init__(self):
         pass
-
+    
 
     def create_task(self):
         task_title = input('Enter the title of the task: ')
@@ -85,6 +95,8 @@ class task_manager:
             print('Invalid date format. Please enter the date in the format YYYY-MM-DD.')
             return
 
+        z = sqlite_Repository()
+        
 
     def update_task(self):
         task_id = input('Enter the ID of the task you want to update: ')
@@ -116,9 +128,14 @@ class task_manager:
     
     def retrieve_task(self):
         pass
+        
+    
+    
+
+        
 
 
 if __name__ == '__main__':
     T = task_manager()
-
     trigger_task_management()
+    

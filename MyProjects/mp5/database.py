@@ -8,19 +8,53 @@
         - INSERT,UPDATE and DELETE
 
 """
+import click
+
+# this is instance of database
+def create_table():
+    # click.echo("which database you want to use to store task:\n 1) Sqlite  \n 2) PostgreSQL")
+    # user_input = int(input("enter your choice"))
+    # if user_input == 1:
+    #     s.Sqlite_Repository
+    # elif user_input == 2:
+    #     p.postgreSQL_Repository()
+    create_table_sqlitetask = '''CREATE TABLE IF NOT EXISTS task (
+                                    task_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                    task TEXT NOT NULL,
+                                    description TEXT NOT NULL,
+                                    due_date DATE NOT NULL
+                                    )'''
+    create_table_if_not_exist('task',create_table_sqlitetask)
 
 class Repository_Database:
-    pass
-
-
-
-
-class Sqlite_Repository:
     
-    pass
+    def execute_query(self):
+        pass
 
 
 
+# concreate class of database
+class sqlite_Repository(Repository_Database):
+    
+    def execute_query(self):
+        query = f"INSERT INTO task (task, description, due_date) VALUES ('{task}', '{description}', '{due_date}')"
 
-class postgreSQL_Repository:
-    pass 
+        return
+
+
+
+# concrete class of database
+class postgreSQL_Repository(Repository_Database):
+    
+    def execute_query(self):
+        pass
+    
+        return
+
+if __name__ == '__main__':
+    db = Repository_Database()
+    z = Sqlite_Repository
+
+    # Calling the execute_query() method on the objects
+    db.execute_query()
+    db.execute_query()
