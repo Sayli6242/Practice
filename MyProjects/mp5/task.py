@@ -32,13 +32,20 @@ from database import sqlite_Repository
 from database import postgreSQL_Repository
 @click.command()
 def trigger_task_management():
+    # make object of class task_manager
+    
+    db = sqlite_Repository()
+    db = postgreSQL_Repository()
+    T = task_manager(db)
 
     click.echo("which database you want to use to store task:\n 1) Sqlite  \n 2) PostgreSQL")
     database_choice = int(input("enter your choice: "))
     if database_choice == 1:
-        db = sqlite_Repository8
+        db.execute_query()
+       
     elif database_choice == 2:
-        db = postgreSQL_Repository
+        db.execute_query()
+        
     else:
         print("Invalid Choice")
         return
@@ -75,8 +82,8 @@ def create_table_if_not_exist():
 
 class task_manager:
 
-    def __init__(self):
-        pass
+    def __init__(self,db):
+        self.db = db
     
 
     def create_task(self):
@@ -136,6 +143,5 @@ class task_manager:
 
 
 if __name__ == '__main__':
-    T = task_manager()
     trigger_task_management()
-    
+    create_table()

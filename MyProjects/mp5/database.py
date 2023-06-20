@@ -9,15 +9,10 @@
 
 """
 import click
-
+from mp4helpers.sqliteHelper import create_table_if_not_exist
 # this is instance of database
 def create_table():
-    # click.echo("which database you want to use to store task:\n 1) Sqlite  \n 2) PostgreSQL")
-    # user_input = int(input("enter your choice"))
-    # if user_input == 1:
-    #     s.Sqlite_Repository
-    # elif user_input == 2:
-    #     p.postgreSQL_Repository()
+    
     create_table_sqlitetask = '''CREATE TABLE IF NOT EXISTS task (
                                     task_id INTEGER PRIMARY KEY AUTOINCREMENT,
                                     task TEXT NOT NULL,
@@ -38,23 +33,32 @@ class sqlite_Repository(Repository_Database):
     
     def execute_query(self):
         query = f"INSERT INTO task (task, description, due_date) VALUES ('{task}', '{description}', '{due_date}')"
+        parameters = (task_title, task_description,task_due_date)
+        result , task_id = execute_query(query, parameters)
 
+        print(f'task add successfully with id {task_id}')
+        
         return
-
 
 
 # concrete class of database
 class postgreSQL_Repository(Repository_Database):
     
     def execute_query(self):
-        pass
-    
+        query = f"INSERT INTO task (task, description, due_date) VALUES ('{task}', '{description}', '{due_date}')"
+        parameters = (task_title, task_description,task_due_date)
+        result , task_id = execute_query(query, parameters)
+
+        print(f'task add successfully with id {task_id}')
+        
         return
 
+
 if __name__ == '__main__':
+   
     db = Repository_Database()
     z = Sqlite_Repository
 
     # Calling the execute_query() method on the objects
-    db.execute_query()
-    db.execute_query()
+    # db.execute_query()
+    # db.execute_query()
