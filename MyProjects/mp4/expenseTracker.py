@@ -65,7 +65,7 @@ def main():
 
         elif choice == 4:
             e.set_budget()
-        
+
         elif choice == 5:
             e.analyze_expenses()
 

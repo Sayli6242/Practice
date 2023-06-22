@@ -10,55 +10,75 @@
 """
 import click
 from mp4helpers.sqliteHelper import create_table_if_not_exist
+from mp4helpers.sqliteHelper import execute_query
 # this is instance of database
-def create_table():
-    
-    create_table_sqlitetask = '''CREATE TABLE IF NOT EXISTS task (
-                                    task_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                    task TEXT NOT NULL,
-                                    description TEXT NOT NULL,
-                                    due_date DATE NOT NULL
-                                    )'''
-    create_table_if_not_exist('task',create_table_sqlitetask)
+                             
+
 
 class Repository_Database:
     
-    def execute_query(self):
+    def create_table():
+        pass
+    
+    def insert_query():
         pass
 
+    def update_query():
+        pass
 
+    def delete_query():
+        pass
 
 # concreate class of database
 class sqlite_Repository(Repository_Database):
     
-    def execute_query(self):
-        query = f"INSERT INTO task (task, description, due_date) VALUES ('{task}', '{description}', '{due_date}')"
+    def create_table():
+        create_table_task = "CREATE TABLE IF NOT EXISTS task(task_id INTEGER PRIMARY KEY AUTOINCREMENT,task_title TEXT,task_description TEXT,task_due_date integer)"
+        create_table_if_not_exist("task", create_table_task)
+        return 
+
+    def insert_query(self, task_title,task_description,task_due_date):
+        query = "INSERT INTO task (task_title, task_description, task_due_date) VALUES (?, ?, ?)"
         parameters = (task_title, task_description,task_due_date)
         result , task_id = execute_query(query, parameters)
+        print(f'task add successfully with id {task_id}')        
+        return  
 
-        print(f'task add successfully with id {task_id}')
-        
+    def update_query(self,task_id,task_title,task_description,task_due_date):
+        query = "UPDATE task SET task_title = ?, task_discription = ?, due_date = ? WHERE task_id = ?"
+        parameters = (task_id,task_title, task_description,task_due_date)
+        result = execute_query(query,parameters)
+        print('task updated successfully')
         return
 
+    def delete_query(self,task_id):
+        query = "DELETE FROM task WHERE task_id = ?"  # Update the column name to task_id
+        parameters = (task_id,)
+        result = execute_query(query, parameters)
+        print('Delete task successfully')
+        return
+        
 
 # concrete class of database
 class postgreSQL_Repository(Repository_Database):
-    
-    def execute_query(self):
-        query = f"INSERT INTO task (task, description, due_date) VALUES ('{task}', '{description}', '{due_date}')"
-        parameters = (task_title, task_description,task_due_date)
-        result , task_id = execute_query(query, parameters)
 
-        print(f'task add successfully with id {task_id}')
-        
-        return
+    def create_table():
+        pass
+
+
+    def insert_query():
+        pass
+    
+    def update_query():
+        pass
+
+    
+    def delete_query():
+        pass
+    
 
 
 if __name__ == '__main__':
-   
-    db = Repository_Database()
-    z = Sqlite_Repository
 
-    # Calling the execute_query() method on the objects
-    # db.execute_query()
-    # db.execute_query()
+    db = Repository_Database()
+  

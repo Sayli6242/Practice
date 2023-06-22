@@ -24,61 +24,12 @@ This program should provide various operations such as
 
 """
 import click
-from mp4helpers.validationHelper import check_number_in_range
 from mp4helpers.validationHelper import check_name_validation
 from mp4helpers.validationHelper import check_validation_of_provide_ID
 from mp4helpers.validationHelper import validate_due_date
 from database import sqlite_Repository  
 from database import postgreSQL_Repository
-@click.command()
-def trigger_task_management():
-    # make object of class task_manager
-    
-    db = sqlite_Repository()
-    db = postgreSQL_Repository()
-    T = task_manager(db)
 
-    click.echo("which database you want to use to store task:\n 1) Sqlite  \n 2) PostgreSQL")
-    database_choice = int(input("enter your choice: "))
-    if database_choice == 1:
-        db.execute_query()
-       
-    elif database_choice == 2:
-        db.execute_query()
-        
-    else:
-        print("Invalid Choice")
-        return
- 
-    lst = ['Create Task','Update Task','Delete Task','Retrieve Task']
-   
-    while True:
-        for i, item in enumerate(lst, ):
-            click.echo(f"{i+1}) {item}")
-
-        choice = int(input("Enter your choice: ").strip())
-        if not  check_number_in_range(choice,len(lst)):
-            print('choice must be an number from given choices')
-            return
-
-        if choice == 1:
-            T.create_task()
-        
-        if choice == 2:
-            T.delete_task()
-
-        if choice == 3:
-            T.update_task()
-
-        if choice == 4:
-            T.retrieve_task()
-
-
-def create_table_if_not_exist():
-    pass
-    # create object of selected database
-    # execute required query(insert,delete,update)
-    # 
 
 class task_manager:
 
@@ -102,9 +53,10 @@ class task_manager:
             print('Invalid date format. Please enter the date in the format YYYY-MM-DD.')
             return
 
-        z = sqlite_Repository()
-        
+        sqlite_Repository().insert_query(task_title, task_description,task_due_date)
 
+
+       
     def update_task(self):
         task_id = input('Enter the ID of the task you want to update: ')
         if not check_validation_of_provide_ID(task_id):
@@ -126,22 +78,25 @@ class task_manager:
             print('Invalid date format. Please enter the date in the format YYYY-MM-DD.')
             return
 
+        sqlite_Repository().update_query(task_id, task_title, task_description, task_due_date)
             
     def delete_task(self):
         task_id = input('Enter the ID of the task you want to update: ')
         if not check_validation_of_provide_ID(task_id):
             print("Invalid expense_id")
             return
-    
+
+        sqlite_Repository().delete_query(task_id)
+
+
     def retrieve_task(self):
         pass
-        
-    
-    
 
-        
+
 
 
 if __name__ == '__main__':
-    trigger_task_management()
     create_table()
+    trigger_task_management()
+    
+    
