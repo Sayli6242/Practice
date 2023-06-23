@@ -14,28 +14,21 @@
         - 
 """
 
-import click
+
 from mp4helpers.validationHelper import check_number_in_range
 from database import sqlite_Repository, postgreSQL_Repository
 from task import task_manager
-@click.command()
+
 def trigger_task_management():
     
-    # make object of class task_manager    
-    # db = sqlite_Repository.create_table()
-    # db = postgreSQL_Repository.create_table()
-    
-
-    
-
-
-    click.echo("which database you want to use to store task:\n 1) Sqlite  \n 2) PostgreSQL")
+    print("which database you want to use to store task:\n 1) Sqlite  \n 2) PostgreSQL")
     database_choice = int(input("enter your choice: "))
     if database_choice == 1:
-        db = sqlite_Repository.create_table()
+        db = sqlite_Repository()
+        
        
     elif database_choice == 2:
-        db = postgreSQL_Repository.create_table()
+        db = postgreSQL_Repository()
         
         
     else:
@@ -48,7 +41,7 @@ def trigger_task_management():
 
     while True:
         for i, item in enumerate(lst, ):
-            click.echo(f"{i+1}) {item}")
+            print(f"{i+1}) {item}")
 
         choice = int(input("Enter your choice: ").strip())
         if not  check_number_in_range(choice,len(lst)):

@@ -12,8 +12,10 @@ import click
 from mp4helpers.sqliteHelper import create_table_if_not_exist
 from mp4helpers.sqliteHelper import execute_query
 # this is instance of database
-                             
-
+# make this implementation generic to use
+# make all query dynamic to use for multiple table and multiple values
+# take table name as input form above layer
+# all those things required is input to function
 
 class Repository_Database:
     

@@ -53,8 +53,8 @@ class task_manager:
             print('Invalid date format. Please enter the date in the format YYYY-MM-DD.')
             return
 
-        sqlite_Repository().insert_query(task_title, task_description,task_due_date)
-
+        db.insert_query(task_title, task_description,task_due_date)
+        
 
        
     def update_task(self):
@@ -78,7 +78,7 @@ class task_manager:
             print('Invalid date format. Please enter the date in the format YYYY-MM-DD.')
             return
 
-        sqlite_Repository().update_query(task_id, task_title, task_description, task_due_date)
+        db.update_query(task_id, task_title, task_description, task_due_date)
             
     def delete_task(self):
         task_id = input('Enter the ID of the task you want to update: ')
@@ -86,7 +86,7 @@ class task_manager:
             print("Invalid expense_id")
             return
 
-        sqlite_Repository().delete_query(task_id)
+        db.delete_query(task_id)
 
 
     def retrieve_task(self):
