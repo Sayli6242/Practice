@@ -9,8 +9,8 @@
 
 """
 import click
-from mp4helpers.sqliteHelper import create_table_if_not_exist
-from mp4helpers.sqliteHelper import execute_query
+import sqlite3
+from  psycopg2 import connect
 # this is instance of database
 # make this implementation generic to use
 # make all query dynamic to use for multiple table and multiple values
@@ -33,40 +33,58 @@ class Repository_Database:
 
 # concreate class of database
 class sqlite_Repository(Repository_Database):
-    
-    def create_table():
-        create_table_task = "CREATE TABLE IF NOT EXISTS task(task_id INTEGER PRIMARY KEY AUTOINCREMENT,task_title TEXT,task_description TEXT,task_due_date integer)"
-        create_table_if_not_exist("task", create_table_task)
-        return 
+    def __init__(self):
+        self.con = sqlite3.connect("database.db")
+        self.cur = self.con.cursor()
+        
+    def create_table(self,table_name,columns):
+        column_definitions = ', '.join(columns)
+        create_table_query = f"CREATE TABLE IF NOT EXISTS {table_name} ({column_definitions}, status TEXT DEFAULT 'pending')"
 
-    def insert_query(self, task_title,task_description,task_due_date):
-        query = "INSERT INTO task (task_title, task_description, task_due_date) VALUES (?, ?, ?)"
-        parameters = (task_title, task_description,task_due_date)
-        result , task_id = execute_query(query, parameters)
+        self.cur.execute(create_table_query)
+        self.con.commit()
+        print(f'table {table_name} created successfully')
+
+    def insert_query(self, task_title,task_description,due_date, status):
+        query = "INSERT INTO task (task_title, task_description, due_date, status) VALUES (?, ?, ?, 'pending')"
+        self.cur.execute(query,(task_title, task_description, due_date, status))
+        self.con.commit()
         print(f'task add successfully with id {task_id}')        
         return  
 
     def update_query(self,task_id,task_title,task_description,task_due_date):
         query = "UPDATE task SET task_title = ?, task_discription = ?, due_date = ? WHERE task_id = ?"
-        parameters = (task_id,task_title, task_description,task_due_date)
-        result = execute_query(query,parameters)
+        self.cur.execute(query)
+        self.con.commit()
         print('task updated successfully')
         return
 
     def delete_query(self,task_id):
         query = "DELETE FROM task WHERE task_id = ?"  # Update the column name to task_id
-        parameters = (task_id,)
-        result = execute_query(query, parameters)
+        self.cur.execute(query)
+        self.con.commit()
         print('Delete task successfully')
         return
+
+    
         
 
 # concrete class of database
 class postgreSQL_Repository(Repository_Database):
 
+    def __init__(self):
+        self.con = connect(
+            host = "localhost",
+            port = "5432",
+            database ="postgres",
+            user = "postgres",
+            password = "mysecretpassword",
+        )
+    
+        self.cur = self.con.cursor()
+
     def create_table():
         pass
-
 
     def insert_query():
         pass

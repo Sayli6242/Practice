@@ -25,11 +25,12 @@ def trigger_task_management():
     database_choice = int(input("enter your choice: "))
     if database_choice == 1:
         db = sqlite_Repository()
+        db.create_table('task',["task_id INTEGER PRIMARY KEY AUTOINCREMENT","task_title TEXT","task_description TEXT","due_date INTEGER"])
         
        
     elif database_choice == 2:
         db = postgreSQL_Repository()
-        
+        db.create_table()
         
     else:
         print("Invalid Choice")

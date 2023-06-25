@@ -29,13 +29,14 @@ from mp4helpers.validationHelper import check_validation_of_provide_ID
 from mp4helpers.validationHelper import validate_due_date
 from database import sqlite_Repository  
 from database import postgreSQL_Repository
-
+from mp4helpers.validationHelper import check_number_in_range
 
 class task_manager:
 
     def __init__(self,db):
         self.db = db
-    
+       
+
 
     def create_task(self):
         task_title = input('Enter the title of the task: ')
@@ -48,12 +49,12 @@ class task_manager:
             print('invalid input')
             return
 
-        task_due_date = input('Enter the due date of the task (YYYY-MM-DD): ')
-        if not validate_due_date(task_due_date):
+        due_date = input('Enter the due date of the task (YYYY-MM-DD): ')
+        if not validate_due_date(due_date):
             print('Invalid date format. Please enter the date in the format YYYY-MM-DD.')
             return
 
-        db.insert_query(task_title, task_description,task_due_date)
+        self.db.insert_query(task_title, task_description,due_date,status)
         
 
        
@@ -78,7 +79,7 @@ class task_manager:
             print('Invalid date format. Please enter the date in the format YYYY-MM-DD.')
             return
 
-        db.update_query(task_id, task_title, task_description, task_due_date)
+        self.db.update_query(task_id, task_title, task_description, task_due_date)
             
     def delete_task(self):
         task_id = input('Enter the ID of the task you want to update: ')
@@ -86,12 +87,26 @@ class task_manager:
             print("Invalid expense_id")
             return
 
-        db.delete_query(task_id)
+        self.db.delete_query(task_id)
 
 
     def retrieve_task(self):
-        pass
-
+        print('choose retrive task based on which functionality: ')
+        lst = [status,priority, due_dates]
+        for i, item in enumerate(lst, ):
+            print(f"{i+1}) {item}")
+        choice = int(input("enter choice to retrieve task: "))
+        if not check_number_in_range(choice, lst):
+            print('choice must be an number from given choices')
+            return
+        if choice == 1:
+            pass
+        elif choice == 2:
+            pass
+        elif choice == 3:
+            pass
+        else:
+            ('invalid choice')
 
 
 
