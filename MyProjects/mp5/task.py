@@ -53,8 +53,9 @@ class task_manager:
         if not validate_due_date(due_date):
             print('Invalid date format. Please enter the date in the format YYYY-MM-DD.')
             return
+        
 
-        self.db.insert_query(task_title, task_description,due_date,status)
+        self.db.insert_query("task",['task_title','task_description','due_date'], [task_title,task_description,due_date] )
         
 
        
@@ -64,35 +65,49 @@ class task_manager:
             print("Invalid expense_id")
             return
 
-        task_title = input('Enter the updated title of the task: ')
-        if not check_name_validation(task_title):
+        updated_task_title = input('Enter the updated title of the task: ')
+        if not check_name_validation(updated_task_title):
             print('Enter a valid title')
             return
 
-        task_description = input('Enter the updated task description: ')
-        if not check_name_validation(task_description):
+        updated_task_description = input('Enter the updated task description: ')
+        if not check_name_validation(updated_task_description):
             print('Invalid input')
             return
 
-        task_due_date = input('Enter the updated due date of the task (YYYY-MM-DD): ')
-        if not validate_due_date(task_due_date):
+        updated_due_date = input('Enter the updated due date of the task (YYYY-MM-DD): ')
+        if not validate_due_date(updated_due_date):
             print('Invalid date format. Please enter the date in the format YYYY-MM-DD.')
             return
 
-        self.db.update_query(task_id, task_title, task_description, task_due_date)
+        status_lst = ['pending','inprogress','completed']
+        for i, item in enumerate(status_lst):
+            print(f"{i+1}) {item}")
+
+        update_task_status = int(input('enter updated status of task: ').strip())
+        if not  check_number_in_range(update_task_status,len(status_lst)):
+            print('choice must be an number from given choices')
+            return
+        if update_task_status == 1:
+            status = 'pending'
+        elif update_task_status == 2:
+            status = 'inprogress'
+        elif update_task_status == 3:
+            status = 'completed'
+        self.db.update_query("task",{"task_title":updated_task_title,"task_description":updated_task_description,"due_date":updated_due_date,"status":status},"task_id",task_id)
             
     def delete_task(self):
-        task_id = input('Enter the ID of the task you want to update: ')
+        task_id = input('Enter the ID of the task you want to delete: ')
         if not check_validation_of_provide_ID(task_id):
             print("Invalid expense_id")
             return
 
-        self.db.delete_query(task_id)
+        self.db.delete_query('task','task_id',task_id)
 
 
     def retrieve_task(self):
         print('choose retrive task based on which functionality: ')
-        lst = [status,priority, due_dates]
+        lst = ["By status","By priority", "By due_dates"]
         for i, item in enumerate(lst, ):
             print(f"{i+1}) {item}")
         choice = int(input("enter choice to retrieve task: "))
@@ -100,13 +115,22 @@ class task_manager:
             print('choice must be an number from given choices')
             return
         if choice == 1:
-            pass
+            task = self.db.retrieve_pending_tasks(status)
         elif choice == 2:
-            pass
+            task = self.db.retrieve_inprogress_tasks(status)
         elif choice == 3:
-            pass
+            task = self.db.retrieve_completed_tasks(status)
         else:
             ('invalid choice')
+            return
+        
+        for task in tasks:
+            print(f"Task ID: {task['task_id']}")
+            print(f"Title: {task['task_title']}")
+            print(f"Description: {task['task_description']}")
+            print(f"Due Date: {task['task_due_date']}")
+            print("")
+
 
 
 

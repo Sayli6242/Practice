@@ -37,37 +37,59 @@ class sqlite_Repository(Repository_Database):
         self.con = sqlite3.connect("database.db")
         self.cur = self.con.cursor()
         
-    def create_table(self,table_name,columns):
+    def create_table(self,table_name,columns,status):
         column_definitions = ', '.join(columns)
-        create_table_query = f"CREATE TABLE IF NOT EXISTS {table_name} ({column_definitions}, status TEXT DEFAULT 'pending')"
-
+        create_table_query = f"CREATE TABLE IF NOT EXISTS {table_name} ({column_definitions}, status TEXT DEFAULT '{status}')"
         self.cur.execute(create_table_query)
         self.con.commit()
         print(f'table {table_name} created successfully')
 
-    def insert_query(self, task_title,task_description,due_date, status):
-        query = "INSERT INTO task (task_title, task_description, due_date, status) VALUES (?, ?, ?, 'pending')"
-        self.cur.execute(query,(task_title, task_description, due_date, status))
+    def insert_query(self, table_name,columns,values):
+        column_names = ', '.join(columns)
+        placeholders = ', '.join(['?' for _ in values])
+        query = f"INSERT INTO {table_name} ({column_names}) VALUES ({placeholders})"
+        self.cur.execute(query, values)
+        task_id = self.cur.lastrowid
         self.con.commit()
         print(f'task add successfully with id {task_id}')        
         return  
 
-    def update_query(self,task_id,task_title,task_description,task_due_date):
-        query = "UPDATE task SET task_title = ?, task_discription = ?, due_date = ? WHERE task_id = ?"
-        self.cur.execute(query)
+    def update_query(self, table_name, set_values, condition_column, condition_value):
+        set_clause = ', '.join([f"{column} = ?" for column in set_values])
+        query = f"UPDATE {table_name} SET {set_clause} WHERE {condition_column} = ?"
+        values = list(set_values.values()) + [condition_value]
+        self.cur.execute(query,values)
+        self.cur.lastrowid
+        self.cur.fetchall()
         self.con.commit()
         print('task updated successfully')
         return
 
-    def delete_query(self,task_id):
-        query = "DELETE FROM task WHERE task_id = ?"  # Update the column name to task_id
-        self.cur.execute(query)
+    def delete_query(self,table_name,id_column,id_value):
+        query = f"DELETE FROM {table_name} WHERE {id_column} = ?"
+        values = (id_value,)
+        self.cur.execute(query,values)
         self.con.commit()
-        print('Delete task successfully')
+        print("Task deleted successfully")
         return
 
-    
-        
+    def retrieve_pending_tasks(self,status):
+        query = "SELECT * FROM tasks WHERE status = ?"
+        self.cur.execute(query, (status,))
+        tasks = self.cur.fetchall()
+        return tasks
+
+    def retrieve_inprogress_tasks(self,status):
+        query = "SELECT * FROM tasks WHERE status = ?"
+        self.cur.execute(query, (status,))
+        tasks = self.cur.fetchall()
+        return tasks
+
+    def retrieve_completed_tasks(self, status):
+        query = "SELECT * FROM tasks WHERE status = ?"
+        self.cur.execute(query, (status,))
+        tasks = self.cur.fetchall()
+        return tasks
 
 # concrete class of database
 class postgreSQL_Repository(Repository_Database):
@@ -83,20 +105,68 @@ class postgreSQL_Repository(Repository_Database):
     
         self.cur = self.con.cursor()
 
-    def create_table():
-        pass
+    def create_table(self, table_name, columns, status):
+        column_definitions = ', '.join(columns)
+        create_table_query = f"CREATE TABLE IF NOT EXISTS {table_name} ({column_definitions}, status TEXT DEFAULT '{status}')"
+        self.cur.execute(create_table_query)
+        self.con.commit()
+        print(f"Table {table_name} created successfully")
 
-    def insert_query():
-        pass
+    def insert_query(self, table_name, columns, values):
+        column_names = ', '.join(columns)
+        placeholders = ', '.join(['%s' for _ in values])
+        query = f"INSERT INTO {table_name} ({column_names}) VALUES ({placeholders})"
+        self.execute(query, values)
+        task_id = self.get_last_inserted_id(table_name)
+        print(f"Task added successfully with id {task_id}")
+        return
+
+    def get_last_inserted_id(self, table_name):
+        query = f"SELECT lastval() FROM {table_name}"
+        con = psycopg2.connect(
+            host="localhost",
+            port = "5432",
+            database="postgres",
+            user="postgres",
+            password="mysecretpassword"
+        )
+        self.cur.execute(query)
+        task_id = cursor.fetchone()[0]
+        return task_id
     
-    def update_query():
-        pass
+    def update_query(self, table_name, set_values, condition_column, condition_value):
+        set_clause = ', '.join([f"{column} = %s" for column in set_values])
+        query = f"UPDATE {table_name} SET {set_clause} WHERE {condition_column} = %s"
+        values = list(set_values.values()) + [condition_value]
+        self.cur.execute(query, values)
+        print("Task updated successfully")
+        return
 
     
-    def delete_query():
-        pass
+    def delete_query(self, table_name, id_column, id_value):
+        query = f"DELETE FROM {table_name} WHERE {id_column} = %s"
+        values = (id_value,)
+        self.cur.execute(query, values)
+        print("Task deleted successfully")
+        return
     
+    def retrieve_pending_tasks(self, status):
+        query = "SELECT * FROM tasks WHERE status = %s"
+        self.cur.execute(query, (status,))
+        tasks = self.cur.fetchall()
+        return tasks
 
+    def retrieve_inprogress_tasks(self, status):
+        query = "SELECT * FROM tasks WHERE status = %s"
+        self.cur.execute(query, (status,))
+        tasks = self.cur.fetchall()
+        return tasks
+
+    def retrieve_completed_tasks(self, status):
+        query = "SELECT * FROM tasks WHERE status = %s"
+        self.cur.execute(query, (status,))
+        tasks = self.cur.fetchall()
+        return tasks
 
 if __name__ == '__main__':
 
