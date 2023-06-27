@@ -51,7 +51,7 @@ class sqlite_Repository(Repository_Database):
         self.cur.execute(query, values)
         task_id = self.cur.lastrowid
         self.con.commit()
-        print(f'task add successfully with id {task_id}')        
+        print(f'data add successfully with id {task_id}')        
         return  
 
     def update_query(self, table_name, set_values, condition_column, condition_value):
@@ -62,7 +62,7 @@ class sqlite_Repository(Repository_Database):
         self.cur.lastrowid
         self.cur.fetchall()
         self.con.commit()
-        print('task updated successfully')
+        print('data updated successfully')
         return
 
     def delete_query(self,table_name,id_column,id_value):
@@ -70,27 +70,15 @@ class sqlite_Repository(Repository_Database):
         values = (id_value,)
         self.cur.execute(query,values)
         self.con.commit()
-        print("Task deleted successfully")
+        print("data deleted successfully")
         return
 
-    def retrieve_pending_tasks(self,status):
-        query = "SELECT * FROM tasks WHERE status = ?"
-        self.cur.execute(query, (status,))
-        tasks = self.cur.fetchall()
-        return tasks
-
-    def retrieve_inprogress_tasks(self,status):
-        query = "SELECT * FROM tasks WHERE status = ?"
-        self.cur.execute(query, (status,))
-        tasks = self.cur.fetchall()
-        return tasks
-
-    def retrieve_completed_tasks(self, status):
-        query = "SELECT * FROM tasks WHERE status = ?"
-        self.cur.execute(query, (status,))
-        tasks = self.cur.fetchall()
-        return tasks
-
+    def retrieve_query(self,table_name,column_name,filter_value):
+            query = f"SELECT * FROM {table_name} WHERE {column_name} = ?"
+            self.cur.execute(query, (filter_value,))
+            filtered_data = self.cur.fetchall()
+            return filtered_data
+   
 # concrete class of database
 class postgreSQL_Repository(Repository_Database):
 
@@ -140,7 +128,7 @@ class postgreSQL_Repository(Repository_Database):
         values = list(set_values.values()) + [condition_value]
         self.cur.execute(query, values)
         print("Task updated successfully")
-        return
+        return 
 
     
     def delete_query(self, table_name, id_column, id_value):
@@ -150,23 +138,13 @@ class postgreSQL_Repository(Repository_Database):
         print("Task deleted successfully")
         return
     
-    def retrieve_pending_tasks(self, status):
-        query = "SELECT * FROM tasks WHERE status = %s"
-        self.cur.execute(query, (status,))
-        tasks = self.cur.fetchall()
-        return tasks
+    def retrieve_query(self, table_name, column_name, filter_value):
+        query = f"SELECT * FROM {table_name} WHERE {column_name} = %s"
+        self.cur.execute(query, (filter_value,))
+        filtered_data = self.cur.fetchall()
+        print(filtered_data)
+        return 
 
-    def retrieve_inprogress_tasks(self, status):
-        query = "SELECT * FROM tasks WHERE status = %s"
-        self.cur.execute(query, (status,))
-        tasks = self.cur.fetchall()
-        return tasks
-
-    def retrieve_completed_tasks(self, status):
-        query = "SELECT * FROM tasks WHERE status = %s"
-        self.cur.execute(query, (status,))
-        tasks = self.cur.fetchall()
-        return tasks
 
 if __name__ == '__main__':
 

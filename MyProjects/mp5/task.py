@@ -31,6 +31,12 @@ from database import sqlite_Repository
 from database import postgreSQL_Repository
 from mp4helpers.validationHelper import check_number_in_range
 
+
+statuses = {
+    1:"pending",
+    2:"inprogress",
+    3:"completed"
+}
 class task_manager:
 
     def __init__(self,db):
@@ -54,8 +60,19 @@ class task_manager:
             print('Invalid date format. Please enter the date in the format YYYY-MM-DD.')
             return
         
+        priorities = ["high","low"]
+        for i, item in enumerate(priorities, ):
+            print(f"{i+1}) {item}")
 
-        self.db.insert_query("task",['task_title','task_description','due_date'], [task_title,task_description,due_date] )
+        priority_choice = int(input('enter priority: '))
+        if not check_number_in_range(priority_choice, len(priorities)):
+            print('choice must be an number from given choices')
+            return
+        elif priority_choice == 1:
+            priority = 'high'
+        elif priority_choice == 2:
+            priority = 'low'
+        self.db.insert_query("task",['task_title','task_description','due_date','priority'], [task_title,task_description,due_date,priority] )
         
 
        
@@ -94,7 +111,21 @@ class task_manager:
             status = 'inprogress'
         elif update_task_status == 3:
             status = 'completed'
-        self.db.update_query("task",{"task_title":updated_task_title,"task_description":updated_task_description,"due_date":updated_due_date,"status":status},"task_id",task_id)
+        
+        priorities = ["high","low"]
+        for i, item in enumerate(priorities, ):
+            print(f"{i+1}) {item}")
+
+        priority_choice = int(input('enter priority: '))
+        if not check_number_in_range(priority_choice, len(priorities)):
+            print('choice must be an number from given choices')
+            return
+        elif priority_choice == 1:
+            priority = 'high'
+        elif priority_choice == 2:
+            priority = 'low'
+
+        self.db.update_query("task",{"task_title":updated_task_title,"task_description":updated_task_description,"due_date":updated_due_date,"status":status,"priority":priority  },"task_id",task_id)
             
     def delete_task(self):
         task_id = input('Enter the ID of the task you want to delete: ')
@@ -106,36 +137,64 @@ class task_manager:
 
 
     def retrieve_task(self):
+
         print('choose retrive task based on which functionality: ')
-        lst = ["By status","By priority", "By due_dates"]
-        for i, item in enumerate(lst, ):
+
+        status_lst = ["By status","By priority", "By due_dates"]
+
+        for i, item in enumerate(status_lst, ):
             print(f"{i+1}) {item}")
+
         choice = int(input("enter choice to retrieve task: "))
-        if not check_number_in_range(choice, lst):
+        if not check_number_in_range(choice, len(status_lst)):
             print('choice must be an number from given choices')
             return
-        if choice == 1:
-            task = self.db.retrieve_pending_tasks(status)
-        elif choice == 2:
-            task = self.db.retrieve_inprogress_tasks(status)
-        elif choice == 3:
-            task = self.db.retrieve_completed_tasks(status)
-        else:
-            ('invalid choice')
-            return
-        
-        for task in tasks:
-            print(f"Task ID: {task['task_id']}")
-            print(f"Title: {task['task_title']}")
-            print(f"Description: {task['task_description']}")
-            print(f"Due Date: {task['task_due_date']}")
-            print("")
+         
+        elif choice == 1:
+            
+            options = ["pending","inprogress","completed"]
+            for i, item in enumerate(options, ):
+                print(f"{i+1}) {item}")
+            
+            option_choice = int(input('enter by which status you wants to filtr task: '))
+            if not check_number_in_range(choice, len(options)):
+                print('choice must be an number from given choices')
+                return
+            # if option_choice == 1:
+            filter_tasks = self.db.retrieve_query('task','status',statuses[option_choice])
+            # if option_choice == 2:
+            #     filter_tasks = self.db.retrieve_query('task','status','inprogress')
+            # if option_choice == 3:
+            #     filter_tasks = self.db.retrieve_query('task','status','completed')
 
+        elif choice == 2:
+            priorities = ["high","low"]
+            for i, item in enumerate(priorities, ):
+                print(f"{i+1}) {item}")
+            priority_choice = int(input('enter priority: '))
+            if not check_number_in_range(choice, len(priorities)):
+                print('choice must be an number from given choices')
+                return
+            if priority_choice == 1:
+                filter_tasks = self.db.retrieve_query("task","priority",'high')
+            elif priority_choice == 2:
+                filter_tasks = self.db.retrieve_query("task","priority","low")
+
+            for row in filter_tasks:
+                task_id, title, description, due_date, priority, status = row
+                print(f"{task_id}\t{title}\t\t{description}\t\t{due_date}\t{priority}\t\t{status}")
+
+        elif choice == 3:
+            date = (input('enter due_date that u want to filter task: '))
+            filter_tasks = self.db.retrieve_query("task","due_date",date)
+            for row in filter_tasks:
+                task_id, title, description, due_date, priority, status = row
+                print(f"{task_id}\t{title}\t\t{description}\t\t{due_date}\t{priority}\t\t{status}")
 
 
 
 if __name__ == '__main__':
-    create_table()
+    
     trigger_task_management()
     
     
