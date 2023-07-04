@@ -37,9 +37,9 @@ class sqlite_Repository(Repository_Database):
         self.con = sqlite3.connect("database.db")
         self.cur = self.con.cursor()
         
-    def create_table(self,table_name,columns,status):
+    def create_table(self,table_name,columns):
         column_definitions = ', '.join(columns)
-        create_table_query = f"CREATE TABLE IF NOT EXISTS {table_name} ({column_definitions}, status TEXT DEFAULT '{status}')"
+        create_table_query = f"CREATE TABLE IF NOT EXISTS {table_name} ({column_definitions})"
         self.cur.execute(create_table_query)
         self.con.commit()
         print(f'table {table_name} created successfully')
@@ -93,9 +93,9 @@ class postgreSQL_Repository(Repository_Database):
     
         self.cur = self.con.cursor()
 
-    def create_table(self, table_name, columns, status):
+    def create_table(self, table_name, columns):
         column_definitions = ', '.join(columns)
-        create_table_query = f"CREATE TABLE IF NOT EXISTS {table_name} ({column_definitions}, status TEXT DEFAULT '{status}')"
+        create_table_query = f"CREATE TABLE IF NOT EXISTS {table_name} ({column_definitions})"
         self.cur.execute(create_table_query)
         self.con.commit()
         print(f"Table {table_name} created successfully")
