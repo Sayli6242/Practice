@@ -48,7 +48,7 @@ class sqlite_Repository(Repository_Database):
         column_names = ', '.join(columns)
         placeholders = ', '.join(['?' for _ in values])
         query = f"INSERT INTO {table_name} ({column_names}) VALUES ({placeholders})"
-        self.cur.execute(query, values)
+        self.cur.execute(query, (values),)
         task_id = self.cur.lastrowid
         self.con.commit()
         print(f'data add successfully with id {task_id}')        
