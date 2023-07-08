@@ -8,16 +8,16 @@
         - INSERT,UPDATE and DELETE
 
 """
-import click
+
 import sqlite3
-from  psycopg2 import connect
+from psycopg2 import connect
 # this is instance of database
 # make this implementation generic to use
 # make all query dynamic to use for multiple table and multiple values
 # take table name as input form above layer
 # all those things required is input to function
 
-class Repository_Database:
+class RepositoryDatabase:
     
     def create_table():
         pass
@@ -32,7 +32,7 @@ class Repository_Database:
         pass
 
 # concreate class of database
-class sqlite_Repository(Repository_Database):
+class SqliteRepository(RepositoryDatabase):
     def __init__(self):
         self.con = sqlite3.connect("database.db")
         self.cur = self.con.cursor()
@@ -49,9 +49,9 @@ class sqlite_Repository(Repository_Database):
         placeholders = ', '.join(['?' for _ in values])
         query = f"INSERT INTO {table_name} ({column_names}) VALUES ({placeholders})"
         self.cur.execute(query, (values),)
-        task_id = self.cur.lastrowid
+        id = self.cur.lastrowid
         self.con.commit()
-        print(f'data add successfully with id {task_id}')        
+        print(f'data add successfully with id {id}')        
         return  
 
     def update_query(self, table_name, set_values, condition_column, condition_value):
@@ -80,7 +80,7 @@ class sqlite_Repository(Repository_Database):
             return filtered_data
    
 # concrete class of database
-class postgreSQL_Repository(Repository_Database):
+class PostgresRepository(RepositoryDatabase):
     
     def __init__(self):
         self.con = connect(
@@ -105,8 +105,8 @@ class postgreSQL_Repository(Repository_Database):
         placeholders = ', '.join(['%s' for _ in values])
         query = f"INSERT INTO {table_name} ({column_names}) VALUES ({placeholders})"
         self.execute(query, values)
-        task_id = self.get_last_inserted_id(table_name)
-        print(f"Task added successfully with id {task_id}")
+        id = self.get_last_inserted_id(table_name)
+        print(f"data added successfully with id {id}")
         return
 
     def get_last_inserted_id(self, table_name):
@@ -119,15 +119,15 @@ class postgreSQL_Repository(Repository_Database):
             password="mysecretpassword"
         )
         self.cur.execute(query)
-        task_id = cursor.fetchone()[0]
-        return task_id
+        id = cursor.fetchone()[0]
+        return id
     
     def update_query(self, table_name, set_values, condition_column, condition_value):
         set_clause = ', '.join([f"{column} = %s" for column in set_values])
         query = f"UPDATE {table_name} SET {set_clause} WHERE {condition_column} = %s"
         values = list(set_values.values()) + [condition_value]
         self.cur.execute(query, values)
-        print("Task updated successfully")
+        print("data updated successfully")
         return 
 
     
@@ -135,7 +135,7 @@ class postgreSQL_Repository(Repository_Database):
         query = f"DELETE FROM {table_name} WHERE {id_column} = %s"
         values = (id_value,)
         self.cur.execute(query, values)
-        print("Task deleted successfully")
+        print("datak deleted successfully")
         return
     
     def retrieve_query(self, table_name, column_name, filter_value):
@@ -148,5 +148,5 @@ class postgreSQL_Repository(Repository_Database):
 
 if __name__ == '__main__':
 
-    db = Repository_Database()
+    db = RepositoryDatabase()
   

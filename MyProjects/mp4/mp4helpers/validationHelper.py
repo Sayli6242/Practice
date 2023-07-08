@@ -54,7 +54,22 @@ def check_amount_validation(amount):
 
 def validate_due_date(date_string):
     try:
-        due_date = datetime.strptime(date_string, '%Y-%m-%d')
+        due_date =  datetime.strptime(date_string, '%Y-%m-%d')
         return True
     except ValueError:
         return False
+    
+def validate_id(user_id):
+    if user_id.isdigit():
+            return int(user_id)
+    else:
+        print('Invalid input. Please enter a valid numeric value.')
+    
+def validate_choice(dict_name):
+    try:
+        if choice in dict_name:
+            return choice
+        else:
+            print('Invalid choice. Please enter a valid option number.')
+    except ValueError:
+            print('Invalid input. Please enter a valid option number.')
