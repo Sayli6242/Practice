@@ -42,11 +42,11 @@ from database import PostgresRepository
 from mp4helpers.validationHelper import check_name_validation
 from mp4helpers.validationHelper import check_number_in_range
 from mp4helpers.validationHelper import validate_due_date
-from mp4helpers.validationHelper import validate_id
+from mp4helpers.validationHelper import check_number_validation
 from mp4helpers.validationHelper import validate_choice
 def start_employee_project_management_cli():
 # ask user to choose database
-    try:
+    # try:
         print("which database you want to use to store task:\n 1) Sqlite  \n 2) PostgreSQL")
         database_choice = int(input("enter your choice: "))
         if database_choice == 1:
@@ -58,9 +58,9 @@ def start_employee_project_management_cli():
         elif database_choice == 2:
             db = PostgresRepository()
              # create database object and call method to create tables
-            db.create_table('employee',["employee_id INTEGER PRIMARY KEY AUTOINCREMENT","employee_name TEXT","set_of_skills TEXT","position TEXT"])
-            db.create_table('project',["project_id INTEGER PRIMARY KEY AUTOINCREMENT","project_name TEXT","description TEXT","deadline INTEGER"])
-            db.create_table('assign_project', ["employee_id","project_id"])
+            db.create_table('employee',["employee_id SERIAL PRIMARY KEY","employee_name TEXT","set_of_skills TEXT","position TEXT"])
+            db.create_table('project',["project_id SERIAL PRIMARY KEY","project_name TEXT","description TEXT","deadline INTEGER"])
+            db.create_table('assign_project', ["employee_id INTEGER","project_id INTEGER"])
         else:
             print('invalid choice')
             return
@@ -91,8 +91,8 @@ def start_employee_project_management_cli():
                 p.retreiving_information_of_project()
             else:
                 print('invalid choice')
-    except Exception as e:
-        print(f"An error occurred")
+    # except Exception as e:
+    #     print(f"An error occurred")
 
 # define class employee
 class Employee:
@@ -153,11 +153,11 @@ class Employee:
 
          # Ask user for employee_id to assign project
         employee_id = int(input("Enter employee_id: ").strip())
-        if not validate_id(employee_id):
+        if not check_number_validation(employee_id):
             print('invalid input. plese enter valid numeric value')
         # Ask user for project_id to assign to employee
         project_id = int(input("Enter project_id: ").strip())
-        if not validate_id(project_id):
+        if not check_number_validation(project_id):
             print('invalid input. please enter valid numeric value')
 
         # If the employee has already reached the maximum allowed projects, return an error message
@@ -198,12 +198,12 @@ class Employee:
             print(key,value)
         # Ask the user to choose the functionality
         choice = int(input('enter based on which functionality you want to retrieve info of employee: ').strip())
-        if not validate_choice(employee_position):
+        if not validate_choice(employee_position,choice):
             print('Invalid choice. Please enter a valid option number.')
         if choice == 1:
             # Retrieve information based on employee_id
             employee_id = int(input('enter employee_id: ').strip())
-            if not validate_id(employee_id):
+            if not check_number_validation(employee_id):
                 print('invalid input. please enter valide number')
             result = self.db.retrieve_query('employee','employee_id', employee_id)
             print(result)
@@ -217,7 +217,7 @@ class Employee:
             for key,value in position.items():
                 print(key,value)
             choice =  int(input('enter by which position you want to retrive employee info: '))
-            if not validate_choice(position):
+            if not validate_choice(position,choice):
                 print('Invalid choice. Please enter a valid option number.')
             result = self.db.retrieve_query('employee','position',position[choice])
             print(result)
@@ -289,13 +289,13 @@ class Projects:
             print(key,value)
         
         choice = int(input('enter your choice: ').strip())
-        if not validate_choice(options):
+        if not validate_choice(options,choice):
             print('Invalid choice. Please enter a valid option number. ')
 
         if choice == 1:
             # retreive information based on projet_id
-            p_id = input('enter project id: ')
-            if not validate_id(p_id):
+            p_id = int(input('enter project id: ').strip())
+            if not check_number_validation(p_id):
                 print('invalid input. please enter valid numeric value')
             result = self.db.retrieve_query('project','project_id', p_id)
             for row in result:

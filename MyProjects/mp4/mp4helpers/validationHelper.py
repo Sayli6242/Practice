@@ -46,8 +46,8 @@ def check_phone_validation(member_contact):
     else:
         return False
 
-def check_amount_validation(amount):
-    if amount > 0:
+def check_number_validation(number):
+    if number > 0:
         return True
     else:
         return False
@@ -59,16 +59,16 @@ def validate_due_date(date_string):
     except ValueError:
         return False
     
-def validate_id(user_id):
-    if user_id.isdigit():
-            return int(user_id)
-    else:
-        print('Invalid input. Please enter a valid numeric value.')
+# def validate_id(user_id):
+#     if user_id.isdigit():
+#             return int(user_id)
+#     else:
+#         print('Invalid input. Please enter a valid numeric value.')
     
-def validate_choice(dict_name):
+def validate_choice(dict_name,user_input):
     try:
-        if choice in dict_name:
-            return choice
+        if user_input in dict_name:
+            return user_input
         else:
             print('Invalid choice. Please enter a valid option number.')
     except ValueError:

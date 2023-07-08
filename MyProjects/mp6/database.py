@@ -137,14 +137,12 @@ class PostgresRepository(RepositoryDatabase):
         self.cur.execute(query, values)
         print("datak deleted successfully")
         return
-    
+
     def retrieve_query(self, table_name, column_name, filter_value):
         query = f"SELECT * FROM {table_name} WHERE {column_name} = %s"
         self.cur.execute(query, (filter_value,))
         filtered_data = self.cur.fetchall()
-        print(filtered_data)
-        return 
-
+        return filtered_data
 
 if __name__ == '__main__':
 
