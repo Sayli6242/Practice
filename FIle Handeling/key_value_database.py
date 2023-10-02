@@ -44,22 +44,39 @@ def main():
 
         if option_input == 1:
             key = input("enter key to retrieve value associated with: ")
-            get_key(fileptr, key)
+            result = get_key(fileptr, key)
+            if result is not None:
+                print(f"Value for key '{key}': {result}")
+            else:
+                print(f"Key '{key}' not found.")
+
 
         if option_input == 2:
             key = input("enter key to add: ")
             value = input("enter value to associate key: ")
-            z = put_key(fileptr, key, value)
-            print(z)
+            result = put_key(fileptr, key, value)
+            if result:
+                print(f"Key '{key}' added successfully.")
+            else:
+                print(f"Key '{key}' already exists.")
         
         if option_input == 3:
             key_to_remove = input("enter key you want to delete: ")
-            delete_key(fileptr, key_to_remove)
+            result = delete_key(fileptr, key_to_remove)
+            if result:
+                print(f"Key '{key_to_remove}' deleted successfully.")
+            else:
+                print(f"Key '{key_to_remove}' not found. Nothing to delete.")
+
         
         if option_input == 4:
             key_to_update = input("enter key whose value want to update: ")
             new_value = input("enter new value associate to key: ")
-            update_key(fileptr, key_to_update, new_value)
+            result = update_key(fileptr, key_to_update, new_value)
+            if result:
+                print(f"Key '{key_to_update}' updated successfully.")
+            else:
+                print(f"Key '{key_to_update}' not found. Cannot update.")
 
             break
     
@@ -72,21 +89,18 @@ def get_key(fileptr, key):
 
     with open(fileptr, 'r') as file: 
         # Read the next line from the file
-        line = file.readline()  
+        file.readline()
+        for line in file: 
+        
         # Split the line into key and value using ':' as the delimiter
-        a = line.strip().split(':')
-        for i in file:
+            a = line.strip().split(':')
             k = a[0]
             v = a[1]
-            # Check if the key matches the requested key
+                # Check if the key matches the requested key
             if k == key:  
                 # Return the value if the key is found
                 return v
-            else:
-
-            # Return None if the key is not found
-                return None  
-    
+    return None
 
 # Insert a value into the database associated with a key.
 def put_key(fileptr, key, value):
@@ -101,13 +115,13 @@ def put_key(fileptr, key, value):
             # check if existing key is present in file or not
             if existing_key == key:
                 print('error: key already existed')
-                return 
+                return False
             
             # write key  pair
         new_line = f"{key}:{value}\n"
 
         file.write(new_line)
-        return
+        return True
 
 
 # Remove the value associated with a key.
@@ -118,6 +132,7 @@ def delete_key(fileptr, key_to_remove):
         lines = file.readlines()
         #list to store the updated lines
         updated_lines = [] 
+        result = False
 
         # Iterate through each line in the file
         for line in lines:
@@ -127,6 +142,7 @@ def delete_key(fileptr, key_to_remove):
 
             # Check if the key from the file matches with provided key or not
             if key == key_to_remove:
+                result = True
                 continue  
 
             # Append the line to updated_lines whether it was updated or not
@@ -138,6 +154,7 @@ def delete_key(fileptr, key_to_remove):
 
         # Write the updated lines (excluding the line with the removed key-value pair) back to the file
         file.writelines(updated_lines)
+        return result
 
 
 
@@ -152,7 +169,7 @@ def update_key(fileptr, key_to_update, new_value):
         # with open(temp_file, 'w') as temp:
             # Iterate through each line in the original file
             updated_lines = []
-            
+            result = False
             for line in file:
                 # Split the line into key and value using ':' as the delimiter
                 parts = line.strip().split(':')
@@ -162,6 +179,7 @@ def update_key(fileptr, key_to_update, new_value):
 
                 # Check if the key from the file matches the key to update
                 if key == key_to_update:
+                    result = True
                     # Update the line with the new value
                     # Replace the entire line
                     line = f"{key}:{new_value}\n"
@@ -176,6 +194,7 @@ def update_key(fileptr, key_to_update, new_value):
 
             # Write the updated lines (including the modified or new line) back to the end of the file
             file.writelines(updated_lines)
+            return result
 
 
 
