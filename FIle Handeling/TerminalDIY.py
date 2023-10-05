@@ -1,4 +1,4 @@
-# to make terminal 
+ # to make terminal 
 """
 - we have to run terminal in while loop(continuously).
 - we have to take input from terminal in new line always.(\n)
@@ -15,8 +15,24 @@ import subprocess
 # run program in loop
 while True:
     # ger current working directory
-    directory = os.getcwd()
-    print(directory)
-    # take input in new line always
-    # take_input = input("\nenter command: \n")
-    subprocess.Popen('echo"geek"', shell= True)
+    current_directory = os.getcwd()
+    print(current_directory)
+    try:
+        # take input in new line always
+        user_input = input("enter command: ").strip()
+        # use module to execute commands
+        # result = subprocess.run(user_input, shell= True)
+        # print(result.stdout)
+        result = subprocess.run(user_input, shell=True, capture_output=True, text=True)
+        print(result.stdout)
+
+        # check command is run or failed if failed then return error
+        if result == None:
+            print(result.stderr)
+
+    # use expect block to catch exception
+    except Exception as e:
+        print("error occured")
+
+# print ending msg when while loop is intreputed
+print("this session is ended ")
