@@ -9,21 +9,22 @@
 """
 
 # import operating system
-import os
 import subprocess
-
+import os
 # run program in loop
 while True:
     # ger current working directory
     current_directory = os.getcwd()
     print(current_directory)
-    try:
-        # take input in new line always
-        user_input = input("enter command: ").strip()
+ 
+    # take input in new line always
+    user_input = input("enter command: ").strip()
         # use module to execute commands
         # result = subprocess.run(user_input, shell= True)
         # print(result.stdout)
+    try:
         result = subprocess.run(user_input, shell=True, capture_output=True, text=True)
+    
         print(result.stdout)
 
         # check command is run or failed if failed then return error
