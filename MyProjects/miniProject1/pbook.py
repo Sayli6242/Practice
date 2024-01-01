@@ -74,6 +74,7 @@ def check_phone_validation(phone):
 # check phone number is integer of given range or not
 #  if not then print massage('invalid phone number') and exit program
 
+@app.post("/users/")
 def add_contact():
     # if name exist do not add contact
     try:    

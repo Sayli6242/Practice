@@ -46,7 +46,7 @@ from mp4helpers.validationHelper import check_number_validation
 from mp4helpers.validationHelper import validate_choice
 def start_employee_project_management_cli():
 # ask user to choose database
-    # try:
+    try:
         print("which database you want to use to store task:\n 1) Sqlite  \n 2) PostgreSQL")
         database_choice = int(input("enter your choice: "))
         if database_choice == 1:
@@ -91,8 +91,8 @@ def start_employee_project_management_cli():
                 p.retreiving_information_of_project()
             else:
                 print('invalid choice')
-    # except Exception as e:
-    #     print(f"An error occurred")
+    except Exception as e:
+        print(f"An error occurred")
 
 # define class employee
 class Employee:

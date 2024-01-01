@@ -26,7 +26,7 @@ while True:
         result = subprocess.run(user_input, shell=True, capture_output=True, text=True)
     
         print(result.stdout)
-
+ 
         # check command is run or failed if failed then return error
         if result == None:
             print(result.stderr)
