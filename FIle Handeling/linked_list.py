@@ -25,6 +25,7 @@ class Linked_list:
         self.start_node = None
 
     def Add_Node(self, value):
+        new_node = Node(value)
         if self.start_node == None:
             self.start_node = node
         else:
