@@ -49,3 +49,10 @@ class Linked_list:
     def Remove_Node(self, value):
         pass
 
+
+linked_list = Linked_list()
+linked_list.Add_Node(2)
+linked_list.Add_Node(3)
+
+# [2]   [3]
+# st
