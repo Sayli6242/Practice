@@ -30,10 +30,11 @@ def print_binarytree(root_node):
     print_binarytree(root.leftChild)
     print_binarytree(root.rightChild)
 
-# create root node
-root_node = BinaryTreeNode(50)
+
 # create left and right child nodes
 root_node.leftChild = BinaryTreeNode(20)
+# create root node
+root_node = BinaryTreeNode(50)
 root_node.rightChild = BinaryTreeNode(30)
 
 print_binarytree(root_node)
