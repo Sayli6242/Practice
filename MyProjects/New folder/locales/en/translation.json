@@ -1,0 +1,12 @@
+{
+    "nav": {
+        "header": "Sayli Beauty Parlour",
+        "menu_icon": "Menu",
+        "menu": {
+            "gallery": "Gallery",
+            "about": "About"
+        },
+        "title": "Sayli Beauty Parlour",
+        "hours": "Mon - Sat (8.00am - 7.00pm)"
+    }
+}
